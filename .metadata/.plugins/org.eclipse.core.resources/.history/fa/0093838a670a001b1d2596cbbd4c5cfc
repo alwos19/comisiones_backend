@@ -2,6 +2,8 @@ package com.udea.comisiones.backend.apirest.models.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,7 +11,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -37,10 +41,18 @@ public class Comision implements Serializable {
 	private String idioma;
 	private String lugar;
 
-	
+	@ManyToMany
+	Set<EstadosComision> muchosEstados;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Usuario usuario;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	private TipoComision tipocomision;
+	
+	@OneToMany
+	private List<DestinoCumplidos> cumplidos;
+	
 	
 	
 	@PrePersist
@@ -144,6 +156,16 @@ public class Comision implements Serializable {
 		this.usuario = usuario;
 	}
 	
+
+	public TipoComision getTipocomision() {
+		return tipocomision;
+	}
+
+	public void setTipocomision(TipoComision tipocomision) {
+		this.tipocomision = tipocomision;
+	}
+
+
 	private static final long serialVersionUID = 1L;
 
 }

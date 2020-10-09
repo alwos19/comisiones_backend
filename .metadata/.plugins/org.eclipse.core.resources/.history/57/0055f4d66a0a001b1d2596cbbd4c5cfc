@@ -43,6 +43,7 @@ public class Usuario implements Serializable {
 	}
 	
 	@ManyToOne(fetch = FetchType.LAZY)
+	
 	private Rol rol;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.ALL)
@@ -117,14 +118,6 @@ public class Usuario implements Serializable {
 
 	public void setComisiones(List<Comision> comisiones) {
 		this.comisiones = comisiones;
-	}
-	
-	public Rol getRol() {
-		return rol;
-	}
-
-	public void setRol(Rol rol) {
-		this.rol = rol;
 	}
 
 	/**

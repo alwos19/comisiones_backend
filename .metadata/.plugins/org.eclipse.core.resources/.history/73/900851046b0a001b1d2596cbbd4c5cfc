@@ -118,14 +118,6 @@ public class Usuario implements Serializable {
 	public void setComisiones(List<Comision> comisiones) {
 		this.comisiones = comisiones;
 	}
-	
-	public Rol getRol() {
-		return rol;
-	}
-
-	public void setRol(Rol rol) {
-		this.rol = rol;
-	}
 
 	/**
 	 * 

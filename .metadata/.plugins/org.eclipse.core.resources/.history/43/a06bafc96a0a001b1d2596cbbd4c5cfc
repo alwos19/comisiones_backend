@@ -12,7 +12,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
@@ -27,8 +26,7 @@ public class Usuario implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	private String tipoIdentificacion;
-	private int idetificacion;
+	
 	private String nombre;
 	private String apellido;
 	private String email;
@@ -42,11 +40,11 @@ public class Usuario implements Serializable {
 		createAt = new Date();
 	}
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	private Rol rol;
-	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.ALL)
 	private List<Comision> comisiones;
+	
+	
+	
 	
 	public Usuario() {
 		this.comisiones = new ArrayList<>();
@@ -59,23 +57,6 @@ public class Usuario implements Serializable {
 
 	public void setId(long id) {
 		this.id = id;
-	}
-
-	
-	public String getTipoIdentificacion() {
-		return tipoIdentificacion;
-	}
-
-	public void setTipoIdentificacion(String tipoIdentificacion) {
-		this.tipoIdentificacion = tipoIdentificacion;
-	}
-
-	public int getIdetificacion() {
-		return idetificacion;
-	}
-
-	public void setIdetificacion(int idetificacion) {
-		this.idetificacion = idetificacion;
 	}
 
 	public String getNombre() {
@@ -117,14 +98,6 @@ public class Usuario implements Serializable {
 
 	public void setComisiones(List<Comision> comisiones) {
 		this.comisiones = comisiones;
-	}
-	
-	public Rol getRol() {
-		return rol;
-	}
-
-	public void setRol(Rol rol) {
-		this.rol = rol;
 	}
 
 	/**
