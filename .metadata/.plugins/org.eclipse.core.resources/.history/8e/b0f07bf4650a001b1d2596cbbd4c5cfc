@@ -1,0 +1,49 @@
+package com.udea.comisiones.backend.apirest.models.entity;
+
+import java.io.Serializable;
+import java.util.Date;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="destinos_cumplidos")
+public class DestinoCumplidos implements Serializable{
+	
+	
+	private Long id;
+	private Date fechaEnvio;
+	private Date fechaConfirmacion;
+	private String observacion;
+	
+	
+	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public Date getFechaEnvio() {
+		return fechaEnvio;
+	}
+	public void setFechaEnvio(Date fechaEnvio) {
+		this.fechaEnvio = fechaEnvio;
+	}
+	public Date getFechaConfirmacion() {
+		return fechaConfirmacion;
+	}
+	public void setFechaConfirmacion(Date fechaConfirmacion) {
+		this.fechaConfirmacion = fechaConfirmacion;
+	}
+	public String getObservacion() {
+		return observacion;
+	}
+	public void setObservacion(String observacion) {
+		this.observacion = observacion;
+	}
+	
+
+	private static final long serialVersionUID = 1L;
+	
+}

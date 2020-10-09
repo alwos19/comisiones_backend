@@ -27,8 +27,6 @@ public class Usuario implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	@ManyToMany
-	Set<Rol> muchosRoles;
 	
 	private String nombre;
 	private String apellido;
@@ -43,7 +41,8 @@ public class Usuario implements Serializable {
 		createAt = new Date();
 	}
 	
-	
+	@ManyToMany(mappedBy = "muchosRoles")
+	Set<Rol> roles;
 	
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.ALL)
