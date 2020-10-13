@@ -3,6 +3,9 @@ package com.udea.comisiones.backend.apirest.models.entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -12,21 +15,28 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "roles")
-public class Rol implements Serializable {
+@Table(name = "facultades")
+public class Facultad implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
 	private String nombre;
 	private String descripcion;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "rol")
-	private List<Usuario> usuarios;
+	@Column(name = "centro_de_costo")
+	private Integer centroDeCosto;
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "facultad", cascade = CascadeType.ALL)
+	private List<Departamento> departamento;
+
+	
+	
 	//
-	public Rol() {
-		this.usuarios = new ArrayList<>();
+
+	public Facultad() {
+		this.departamento = new ArrayList<Departamento>();
 	}
 
 	//
@@ -55,13 +65,22 @@ public class Rol implements Serializable {
 		this.descripcion = descripcion;
 	}
 
-	public List<Usuario> getUsuarios() {
-		return usuarios;
+	public Integer getCentroDeCosto() {
+		return centroDeCosto;
 	}
 
-	public void setUsuarios(List<Usuario> usuarios) {
-		this.usuarios = usuarios;
+	public void setCentroDeCosto(Integer centroDeCosto) {
+		this.centroDeCosto = centroDeCosto;
+	}
+
+	public List<Departamento> getDepartamento() {
+		return departamento;
+	}
+
+	public void setDepartamento(List<Departamento> departamento) {
+		this.departamento = departamento;
 	}
 
 	private static final long serialVersionUID = 1L;
+
 }

@@ -20,48 +20,56 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="usuarios")
+@Table(name = "usuarios")
 public class Usuario implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 
+	@Column(name = "tipo_identificacion")
 	private String tipoIdentificacion;
-	private int idetificacion;
+
+	private Integer idetificacion;
 	private String nombre;
 	private String apellido;
 	private String email;
-	
+
 	@Column(name = "create_at")
 	@Temporal(TemporalType.DATE)
 	private Date createAt;
-	
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Rol rol;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Departamento departamento;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.ALL)
+	private List<Comision> comisiones;
+
+	//
+
+	public Usuario() {
+		this.comisiones = new ArrayList<>();
+
+	}
+
 	@PrePersist
 	public void prePersist() {
 		createAt = new Date();
 	}
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	private Rol rol;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.ALL)
-	private List<Comision> comisiones;
-	
-	public Usuario() {
-		this.comisiones = new ArrayList<>();
-		
-	}
 
-	public long getId() {
+	//
+
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	
 	public String getTipoIdentificacion() {
 		return tipoIdentificacion;
 	}
@@ -70,11 +78,11 @@ public class Usuario implements Serializable {
 		this.tipoIdentificacion = tipoIdentificacion;
 	}
 
-	public int getIdetificacion() {
+	public Integer getIdetificacion() {
 		return idetificacion;
 	}
 
-	public void setIdetificacion(int idetificacion) {
+	public void setIdetificacion(Integer idetificacion) {
 		this.idetificacion = idetificacion;
 	}
 
@@ -109,8 +117,7 @@ public class Usuario implements Serializable {
 	public void setCreateAt(Date createAt) {
 		this.createAt = createAt;
 	}
-	
-	
+
 	public List<Comision> getComisiones() {
 		return comisiones;
 	}
@@ -118,7 +125,7 @@ public class Usuario implements Serializable {
 	public void setComisiones(List<Comision> comisiones) {
 		this.comisiones = comisiones;
 	}
-	
+
 	public Rol getRol() {
 		return rol;
 	}
@@ -127,9 +134,14 @@ public class Usuario implements Serializable {
 		this.rol = rol;
 	}
 
-	/**
-	 * 
-	 */
+	public Departamento getDepartamento() {
+		return departamento;
+	}
+
+	public void setDepartamento(Departamento departamento) {
+		this.departamento = departamento;
+	}
+
 	private static final long serialVersionUID = 1L;
 
 }
