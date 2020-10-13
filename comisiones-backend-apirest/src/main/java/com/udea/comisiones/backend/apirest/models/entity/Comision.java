@@ -1,8 +1,11 @@
 package com.udea.comisiones.backend.apirest.models.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -51,6 +55,16 @@ public class Comision implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Usuario usuario;
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "comision", cascade = CascadeType.ALL)
+	private List<Documento> documento;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	private TipoSolicitud tipoSolicitud;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "comision", cascade = CascadeType.ALL)
+	private List<Cumplido> cumplido;
+
+	
 	//
 
 	@PrePersist
@@ -58,6 +72,12 @@ public class Comision implements Serializable {
 		createAt = new Date();
 	}
 
+	public Comision() {
+		this.documento = new ArrayList<Documento>();
+		this.cumplido = new ArrayList<Cumplido>();
+	}
+
+	
 	//
 
 	public Long getId() {
@@ -155,6 +175,41 @@ public class Comision implements Serializable {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
+
+	public List<Documento> getDocumento() {
+		return documento;
+	}
+
+	public void setDocumento(List<Documento> documento) {
+		this.documento = documento;
+	
+	}
+	
+	
+
+	public TipoSolicitud getTipoSolicitud() {
+		return tipoSolicitud;
+	}
+
+	public void setTipoSolicitud(TipoSolicitud tipoSolicitud) {
+		this.tipoSolicitud = tipoSolicitud;
+	}
+
+	
+	
+
+
+	public List<Cumplido> getCumplido() {
+		return cumplido;
+	}
+
+	public void setCumplido(List<Cumplido> cumplido) {
+		this.cumplido = cumplido;
+	}
+
+
+
+
 
 	private static final long serialVersionUID = 1L;
 
