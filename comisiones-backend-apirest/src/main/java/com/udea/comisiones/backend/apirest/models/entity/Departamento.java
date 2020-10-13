@@ -28,6 +28,9 @@ public class Departamento implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Facultad facultad;
 	
+	
+	
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "departamento", cascade = CascadeType.ALL)
 	private List<Usuario> usuario;
 	
