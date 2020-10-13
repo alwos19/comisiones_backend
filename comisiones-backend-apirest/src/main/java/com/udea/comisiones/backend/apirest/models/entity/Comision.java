@@ -22,31 +22,43 @@ public class Comision implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@Column(name = "fecha_inicio")
 	private Date fechaInicio;
+
+	@Column(name = "fecha_fin")
 	private Date fechaFin;
 
 	@Column(name = "create_at")
 	@Temporal(TemporalType.DATE)
 	private Date createAt;
-	
+
+	@Column(name = "fecha_actualizacion")
 	private Date fechaActulizacion;
+
 	private String justificacion;
 	private String resolucion;
+
+	@Column(name = "fecha_resolucion")
 	private Date fechaResolucion;
+
+	@Column(name = "respuesta_devolucion")
 	private String respuestaDevolucion;
+
 	private String idioma;
 	private String lugar;
 
-	
-
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Usuario usuario;
-	
-	
+
+	//
+
 	@PrePersist
 	public void prePersist() {
 		createAt = new Date();
 	}
+
+	//
 
 	public Long getId() {
 		return id;
@@ -143,7 +155,7 @@ public class Comision implements Serializable {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-	
+
 	private static final long serialVersionUID = 1L;
 
 }
