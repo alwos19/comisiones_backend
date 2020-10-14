@@ -64,6 +64,9 @@ public class Comision implements Serializable {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "comision", cascade = CascadeType.ALL)
 	private List<Cumplido> cumplido;
 
+	//@Column(name = "comision_estado")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "comision", cascade = CascadeType.ALL)
+	private List<ComisionEstado> comisionEstado;
 	
 	//
 
@@ -75,6 +78,7 @@ public class Comision implements Serializable {
 	public Comision() {
 		this.documento = new ArrayList<Documento>();
 		this.cumplido = new ArrayList<Cumplido>();
+		this.comisionEstado = new ArrayList<ComisionEstado>();
 	}
 
 	
@@ -185,8 +189,6 @@ public class Comision implements Serializable {
 	
 	}
 	
-	
-
 	public TipoSolicitud getTipoSolicitud() {
 		return tipoSolicitud;
 	}
@@ -194,9 +196,6 @@ public class Comision implements Serializable {
 	public void setTipoSolicitud(TipoSolicitud tipoSolicitud) {
 		this.tipoSolicitud = tipoSolicitud;
 	}
-
-	
-	
 
 
 	public List<Cumplido> getCumplido() {
@@ -207,9 +206,16 @@ public class Comision implements Serializable {
 		this.cumplido = cumplido;
 	}
 
+	public List<ComisionEstado> getComisionEstado() {
+		return comisionEstado;
+	}
+
+	public void setComisionEstado(List<ComisionEstado> comisionEstado) {
+		this.comisionEstado = comisionEstado;
+	}
 
 
-
+	//
 
 	private static final long serialVersionUID = 1L;
 
