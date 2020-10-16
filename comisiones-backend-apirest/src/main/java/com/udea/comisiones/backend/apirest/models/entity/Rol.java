@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "roles")
 public class Rol implements Serializable {
@@ -21,6 +23,7 @@ public class Rol implements Serializable {
 	private String nombre;
 	private String descripcion;
 
+	@JsonIgnoreProperties({"rol", "hibernateLazyInitializer", "handler"})
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "rol")
 	private List<Usuario> usuarios;
 

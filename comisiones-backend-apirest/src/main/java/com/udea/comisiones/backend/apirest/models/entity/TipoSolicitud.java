@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "tipos_solicitud")
 public class TipoSolicitud {
@@ -23,6 +25,7 @@ public class TipoSolicitud {
 	private String nombre;
 	private String descripcion;
 	
+	@JsonIgnoreProperties({"tipoSolicitud", "hibernateLazyInitializer", "handler"})
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tipoSolicitud", cascade = CascadeType.ALL)
 	private List<Comision> comisiones;
 

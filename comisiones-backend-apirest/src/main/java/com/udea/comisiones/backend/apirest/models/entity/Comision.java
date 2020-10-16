@@ -19,6 +19,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "comisiones")
 public class Comision implements Serializable {
@@ -52,19 +54,25 @@ public class Comision implements Serializable {
 	private String idioma;
 	private String lugar;
 
+	
+	@JsonIgnoreProperties({"comision", "hibernateLazyInitializer", "handler"})
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Usuario usuario;
 
+	@JsonIgnoreProperties({"comision", "hibernateLazyInitializer", "handler"})
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "comision", cascade = CascadeType.ALL)
 	private List<Documento> documento;
 	
+	@JsonIgnoreProperties({"comision", "hibernateLazyInitializer", "handler"})
 	@ManyToOne(fetch = FetchType.LAZY)
 	private TipoSolicitud tipoSolicitud;
 	
+	@JsonIgnoreProperties({"comision", "hibernateLazyInitializer", "handler"})
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "comision", cascade = CascadeType.ALL)
 	private List<Cumplido> cumplido;
 
-	//@Column(name = "comision_estado")
+	@JsonIgnoreProperties({"comision", "hibernateLazyInitializer", "handler"})
+	@Column(name = "comision_estado")
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "comision", cascade = CascadeType.ALL)
 	private List<ComisionEstado> comisionEstado;
 	

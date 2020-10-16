@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "documentos")
 public class Documento implements Serializable {
@@ -28,6 +30,7 @@ public class Documento implements Serializable {
 	@Column(name = "es_cumplido")
 	private Boolean esCumplido;
 	
+	@JsonIgnoreProperties({"documento", "hibernateLazyInitializer", "handler"})
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Comision comision;
 	

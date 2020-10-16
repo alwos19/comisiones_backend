@@ -15,6 +15,8 @@ public class UsuarioServiceImpl implements IUsuarioService{
 	@Autowired
 	private IUsuarioDao usuarioDao;
 	
+	//
+	
 	@Override
 	@Transactional(readOnly = true)
 	public List<Usuario> findAll() {

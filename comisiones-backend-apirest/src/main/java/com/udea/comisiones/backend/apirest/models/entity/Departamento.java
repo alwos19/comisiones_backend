@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name="departamentos")
 public class Departamento implements Serializable {
@@ -25,10 +27,11 @@ public class Departamento implements Serializable {
 	private String nombre;
 	private String descripcion;
 	
+	@JsonIgnoreProperties({"departamento", "hibernateLazyInitializer", "handler"})
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Facultad facultad;
 	
-	
+	@JsonIgnoreProperties({"departamento", "hibernateLazyInitializer", "handler"})
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "departamento", cascade = CascadeType.ALL)
 	private List<Usuario> usuario;
 	

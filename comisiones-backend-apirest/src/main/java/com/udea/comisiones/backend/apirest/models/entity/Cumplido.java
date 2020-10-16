@@ -12,9 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "cumplidos")
-public class Cumplido implements Serializable{
+public class Cumplido implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,6 +36,7 @@ public class Cumplido implements Serializable{
 	@Column(name = "informacion_complementaria")
 	private String informacionComplementaria;
 	
+	@JsonIgnoreProperties({"cumplido", "hibernateLazyInitializer", "handler"})
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Comision comision;
 	

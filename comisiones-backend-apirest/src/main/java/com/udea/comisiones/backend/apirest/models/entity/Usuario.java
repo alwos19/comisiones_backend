@@ -19,6 +19,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "usuarios")
 public class Usuario implements Serializable {
@@ -39,12 +41,15 @@ public class Usuario implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date createAt;
 
+	@JsonIgnoreProperties({"usuario", "hibernateLazyInitializer", "handler"})
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Rol rol;
 
+	@JsonIgnoreProperties({"usuario", "hibernateLazyInitializer", "handler"})
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Departamento departamento;
 
+	@JsonIgnoreProperties({"usuario", "hibernateLazyInitializer", "handler"})
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.ALL)
 	private List<Comision> comisiones;
 

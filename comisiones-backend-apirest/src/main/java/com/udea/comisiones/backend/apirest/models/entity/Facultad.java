@@ -14,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "facultades")
 public class Facultad implements Serializable {
@@ -28,10 +30,10 @@ public class Facultad implements Serializable {
 	@Column(name = "centro_de_costo")
 	private Integer centroDeCosto;
 
+	@JsonIgnoreProperties({"facultad", "hibernateLazyInitializer", "handler"})
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "facultad", cascade = CascadeType.ALL)
 	private List<Departamento> departamento;
 
-	
 	
 	//
 

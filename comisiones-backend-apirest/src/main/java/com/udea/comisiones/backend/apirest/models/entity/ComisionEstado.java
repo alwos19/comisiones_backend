@@ -15,10 +15,12 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 
 
 @Entity
-@Table(name="Comision_estados")
+@Table(name="Comisiones_estados")
 public class ComisionEstado implements Serializable {
 
 	@Id
@@ -29,9 +31,11 @@ public class ComisionEstado implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date createAt;
 	
+	@JsonIgnoreProperties({"comisionEstado", "hibernateLazyInitializer", "handler"})
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Comision comision;
 	
+	@JsonIgnoreProperties({"comisionEstado", "hibernateLazyInitializer", "handler"})
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Estado estado;
 	
