@@ -28,23 +28,23 @@ public class TipoSolicitudRestController {
 	
 	//
 	
-	@GetMapping("/tipos_solicitud")
+	@GetMapping("/tipos-solicitud")
 	public List<TipoSolicitud> index(){
 		return tipoSolicitudService.findAll();
 	}
 	
-	@GetMapping("/tipos_solicitud/{id}")
+	@GetMapping("/tipos-solicitud/{id}")
 	public TipoSolicitud show(@PathVariable Long id) {
 		return tipoSolicitudService.findById(id);
 	}
 	
-	@PostMapping("/tipos_solicitud")
+	@PostMapping("/tipos-solicitud")
 	@ResponseStatus(HttpStatus.CREATED)
 	public TipoSolicitud create(@RequestBody TipoSolicitud tipoSolicitud) {
 		return tipoSolicitudService.save(tipoSolicitud);
 	}
 	
-	@PutMapping("/tipos_solicitud/{id}")
+	@PutMapping("/tipos-solicitud/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
 	public TipoSolicitud update(@RequestBody TipoSolicitud tipoSolicitud, @PathVariable Long id) {
 		TipoSolicitud tipoSolicitudActual = tipoSolicitudService.findById(id);
@@ -55,7 +55,7 @@ public class TipoSolicitudRestController {
 		return tipoSolicitudService.save(tipoSolicitudActual);
 	}
 	
-	@DeleteMapping("/tipos_solicitud/{id}")
+	@DeleteMapping("/tipos-solicitud/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable Long id) {
 		tipoSolicitudService.delete(id);
