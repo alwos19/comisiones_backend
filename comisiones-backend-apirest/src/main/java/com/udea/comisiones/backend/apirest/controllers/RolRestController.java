@@ -1,6 +1,7 @@
 package com.udea.comisiones.backend.apirest.controllers;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,52 +15,51 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.udea.comisiones.backend.apirest.models.entity.Usuario;
-import com.udea.comisiones.backend.apirest.models.services.IUsuarioService;
+import com.udea.comisiones.backend.apirest.models.entity.Rol;
+import com.udea.comisiones.backend.apirest.models.services.IRolService;
 
 @CrossOrigin (origins= {"http://localhost:4200"})
 @RestController
 @RequestMapping("/api")
-public class UsuarioRestController {
-	
+public class RolRestController {
+
 	@Autowired
-	private IUsuarioService usuarioService;
+	private IRolService rolService;
 	
 	//
 	
-	@GetMapping("/usuarios")
-	public List<Usuario> index(){
-		return usuarioService.findAll();
+	@GetMapping("/roles")
+	public List<Rol> index(){
+		return rolService.findAll();
 	}
 	
-	@GetMapping("/usuarios/{id}")
-	public Usuario show(@PathVariable Long id) {
-		return usuarioService.findById(id);
+	@GetMapping("/roles/{id}")
+	public Rol show(@PathVariable Long id) {
+		return rolService.findById(id);
 	}
 	
-	@PostMapping("/usuarios")
+	@PostMapping("/roles")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Usuario create(@RequestBody Usuario usuario) {
-		return usuarioService.save(usuario);
+	public Rol create(@RequestBody Rol rol) {
+		return rolService.save(rol);
 	}
 	
-	@PutMapping("/usuarios/{id}")
+	@PutMapping("/roles/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Usuario update(@RequestBody Usuario usuario, @PathVariable Long id) {
-		Usuario usuarioActual = usuarioService.findById(id);
+	public Rol update(@RequestBody Rol rol, @PathVariable Long id) {
+		Rol rolActual = rolService.findById(id);
 		
-		usuarioActual.setApellido(usuario.getApellido());
-		usuarioActual.setNombre(usuario.getNombre());
-		usuarioActual.setEmail(usuario.getEmail());
-		usuarioActual.getCreateAt();
+		rolActual.setNombre(rol.getNombre());
+		rolActual.setDescripcion(rol.getDescripcion());
 		
-		return usuarioService.save(usuarioActual);
+		
+		return rolService.save(rolActual);
 	}
 	
-	@DeleteMapping("/usuarios/{id}")
+	@DeleteMapping("/roles/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable Long id) {
-		usuarioService.delete(id);
+		rolService.delete(id);
 	}
 
 }

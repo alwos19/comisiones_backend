@@ -49,8 +49,8 @@ public class DepartamentoRestController {
 	public Departamento update(@RequestBody Departamento departamento, @PathVariable Long id) {
 		Departamento departamentodActual = departamentoService.findById(id);
 		
-		departamentodActual.setNombre(departamentodActual.getNombre());
-		departamentodActual.setDescripcion(departamentodActual.getDescripcion());
+		departamentodActual.setNombre(departamento.getNombre());
+		departamentodActual.setDescripcion(departamento.getDescripcion());
 		
 		return departamentoService.save(departamentodActual);
 	}

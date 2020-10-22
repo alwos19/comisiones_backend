@@ -32,9 +32,16 @@ public class Usuario implements Serializable {
 	@Column(name = "tipo_identificacion")
 	private String tipoIdentificacion;
 
-	private Integer idetificacion;
+	@Column(length = 12)
+	private Integer identificacion;
+	
+	@Column(length = 30)
 	private String nombre;
+	
+	@Column(length = 30)
 	private String apellido;
+	
+	@Column(length = 100)
 	private String email;
 
 	@Column(name = "create_at")
@@ -84,11 +91,11 @@ public class Usuario implements Serializable {
 	}
 
 	public Integer getIdetificacion() {
-		return idetificacion;
+		return identificacion;
 	}
 
-	public void setIdetificacion(Integer idetificacion) {
-		this.idetificacion = idetificacion;
+	public void setIdetificacion(Integer identificacion) {
+		this.identificacion = identificacion;
 	}
 
 	public String getNombre() {

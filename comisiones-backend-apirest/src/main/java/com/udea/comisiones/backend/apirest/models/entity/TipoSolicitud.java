@@ -1,5 +1,6 @@
 package com.udea.comisiones.backend.apirest.models.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +17,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "tipos_solicitud")
-public class TipoSolicitud {
-	
+public class TipoSolicitud implements Serializable {
+
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -27,13 +29,13 @@ public class TipoSolicitud {
 	
 	@JsonIgnoreProperties({"tipoSolicitud", "hibernateLazyInitializer", "handler"})
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tipoSolicitud", cascade = CascadeType.ALL)
-	private List<Comision> comisiones;
+	private List<Comision> comision;
 
 	
 	//
 	
 	public TipoSolicitud() {
-		this.comisiones = new ArrayList<Comision>();
+		this.comision = new ArrayList<Comision>();
 	}
 	
 	//
@@ -65,13 +67,14 @@ public class TipoSolicitud {
 	}
 
 	public List<Comision> getComisiones() {
-		return comisiones;
+		return comision;
 	}
 
-	public void setComisiones(List<Comision> comisiones) {
-		this.comisiones = comisiones;
+	public void setComisiones(List<Comision> comision) {
+		this.comision = comision;
 	}
 	
+	private static final long serialVersionUID = 1L;
 	
 
 }

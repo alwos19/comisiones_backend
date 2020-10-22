@@ -64,10 +64,6 @@ public class Comision implements Serializable {
 	private List<Documento> documento;
 	
 	@JsonIgnoreProperties({"comision", "hibernateLazyInitializer", "handler"})
-	@ManyToOne(fetch = FetchType.LAZY)
-	private TipoSolicitud tipoSolicitud;
-	
-	@JsonIgnoreProperties({"comision", "hibernateLazyInitializer", "handler"})
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "comision", cascade = CascadeType.ALL)
 	private List<Cumplido> cumplido;
 
@@ -75,6 +71,10 @@ public class Comision implements Serializable {
 	@Column(name = "comision_estado")
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "comision", cascade = CascadeType.ALL)
 	private List<ComisionEstado> comisionEstado;
+	
+	@JsonIgnoreProperties({"comision", "hibernateLazyInitializer", "handler"})
+	@ManyToOne(fetch = FetchType.LAZY)
+	private TipoSolicitud tipoSolicitud;
 	
 	//
 
@@ -196,15 +196,6 @@ public class Comision implements Serializable {
 		this.documento = documento;
 	
 	}
-	
-	public TipoSolicitud getTipoSolicitud() {
-		return tipoSolicitud;
-	}
-
-	public void setTipoSolicitud(TipoSolicitud tipoSolicitud) {
-		this.tipoSolicitud = tipoSolicitud;
-	}
-
 
 	public List<Cumplido> getCumplido() {
 		return cumplido;
@@ -221,9 +212,18 @@ public class Comision implements Serializable {
 	public void setComisionEstado(List<ComisionEstado> comisionEstado) {
 		this.comisionEstado = comisionEstado;
 	}
+	
+	public TipoSolicitud getTipoSolicitud() {
+		return tipoSolicitud;
+	}
 
+	public void setTipoSolicitud(TipoSolicitud tipoSolicitud) {
+		this.tipoSolicitud = tipoSolicitud;
+	}
 
+	
 	//
+
 
 	private static final long serialVersionUID = 1L;
 
