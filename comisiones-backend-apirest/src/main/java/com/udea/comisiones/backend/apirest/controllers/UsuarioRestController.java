@@ -51,7 +51,9 @@ public class UsuarioRestController {
 		usuarioActual.setApellido(usuario.getApellido());
 		usuarioActual.setNombre(usuario.getNombre());
 		usuarioActual.setEmail(usuario.getEmail());
-		usuarioActual.getCreateAt();
+		usuarioActual.setCreateAt(usuario.getCreateAt());
+		usuarioActual.setIdetificacion(usuario.getIdetificacion());
+		usuarioActual.setTipoIdentificacion(usuario.getTipoIdentificacion());
 		
 		return usuarioService.save(usuarioActual);
 	}
@@ -61,5 +63,18 @@ public class UsuarioRestController {
 	public void delete(@PathVariable Long id) {
 		usuarioService.delete(id);
 	}
+	
+	@GetMapping("/usuarios/filtrar-nombre-usuarios/{apellido}")
+	@ResponseStatus(HttpStatus.OK)
+	public List<Usuario> filtrarUsuariosByNombre(@PathVariable String apellido) {
+		return usuarioService.findByApellidoIgnoreCase(apellido);
+	}
+	
+	@GetMapping("/usuarios/filtrar-identificacion-usuarios/{identificacion}")
+	@ResponseStatus(HttpStatus.OK)
+	public List<Usuario> filtrarUsuariosByIdentificacion(@PathVariable Integer identificacion) {
+		return usuarioService.findByIdentificacion(identificacion);
+	}
+	
 
 }

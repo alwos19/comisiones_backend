@@ -35,9 +35,8 @@ public class DepartamentoServiceImpl implements IDepartamentoService{
 		return departamentoDao.save(departamento);
 	}
 
-	@Transactional
 	@Override
-	public void delete(Long id) {
-		departamentoDao.deleteById(id);
+	public List<Departamento> findByNombreIgnoreCase(String nombre) {
+		return departamentoDao.findByNombreIgnoreCase(nombre);
 	}
 }

@@ -43,4 +43,10 @@ public class TipoSolicitudServiceImpl implements ITipoSolicitudService{
 		
 	}
 
+	@Override
+	@Transactional(readOnly = true)
+	public List<TipoSolicitud> findByNombreIgnoreCase(String nombre) {
+		return tipoSolicitudDao.findByNombreIgnoreCase(nombre);
+	}
+
 }

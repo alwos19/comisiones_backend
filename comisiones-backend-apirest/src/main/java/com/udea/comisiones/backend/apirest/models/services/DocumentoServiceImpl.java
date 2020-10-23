@@ -42,4 +42,9 @@ public class DocumentoServiceImpl implements IDocumentoService{
 		documentoDao.deleteById(id);
 		
 	}
+
+	@Override
+	public List<Documento> findByNombreIgnoreCase(String nombre) {
+		return documentoDao.findByNombreIgnoreCase(nombre);
+	}
 }

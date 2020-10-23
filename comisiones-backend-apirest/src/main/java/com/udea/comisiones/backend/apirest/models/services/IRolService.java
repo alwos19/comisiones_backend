@@ -12,6 +12,6 @@ public interface IRolService {
 	
 	public Rol save(Rol rol);
 	
-	public void delete(Long id);
+	public List<Rol> findByNombreIgnoreCase(String nombre);
 
 }

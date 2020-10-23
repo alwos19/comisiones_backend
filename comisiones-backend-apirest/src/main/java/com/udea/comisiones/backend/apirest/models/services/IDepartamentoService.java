@@ -11,7 +11,6 @@ public List<Departamento> findAll();
 	public Departamento findById(Long id);
 	
 	public Departamento save(Departamento departamento);
-	
-	public void delete(Long id);
 
+	public List<Departamento> findByNombreIgnoreCase(String nombre);
 }

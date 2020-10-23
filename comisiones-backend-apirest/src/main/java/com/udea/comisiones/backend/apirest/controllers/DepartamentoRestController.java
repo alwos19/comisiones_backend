@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,10 +54,10 @@ public class DepartamentoRestController {
 		return departamentoService.save(departamentodActual);
 	}
 	
-	@DeleteMapping("/departamentos/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable Long id) {
-		departamentoService.delete(id);
-	}
-
+	@GetMapping("/departamentos/filtrar-departamentos/{nombre}")
+	@ResponseStatus(HttpStatus.OK)
+	public List<Departamento> filtrarDepartamentos(@PathVariable String nombre) {
+		return departamentoService.findByNombreIgnoreCase(nombre);
+	} 
+	
 }

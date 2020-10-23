@@ -60,5 +60,11 @@ public class TipoSolicitudRestController {
 	public void delete(@PathVariable Long id) {
 		tipoSolicitudService.delete(id);
 	}
+	
+	@GetMapping("/tipos-solicitud/filtrar-tipos-solicitud/{nombre}")
+	@ResponseStatus(HttpStatus.OK)
+	public List<TipoSolicitud> filtrarProductos(@PathVariable String nombre) {
+		return tipoSolicitudService.findByNombreIgnoreCase(nombre);
+	} 
 
 }

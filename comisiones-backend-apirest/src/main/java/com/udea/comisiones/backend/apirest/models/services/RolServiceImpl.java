@@ -37,10 +37,9 @@ public class RolServiceImpl implements IRolService{
 	}
 
 	@Override
-	@Transactional
-	public void delete(Long id) {
-		rolDao.deleteById(id);
-		
+	@Transactional(readOnly = true)
+	public List<Rol> findByNombreIgnoreCase(String nombre) {
+		return rolDao.findByNombreIgnoreCase(nombre);
 	}
 
 }

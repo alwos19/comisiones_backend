@@ -43,4 +43,15 @@ public class UsuarioServiceImpl implements IUsuarioService{
 		
 	}
 
+	@Override
+	@Transactional(readOnly = true)
+	public List<Usuario> findByApellidoIgnoreCase(String apellido) {
+		return usuarioDao.findByApellidoIgnoreCase(apellido);
+	}
+
+	@Override
+	public List<Usuario> findByIdentificacion(Integer identificacion) {
+		return usuarioDao.findByIdentificacion(identificacion);
+	}
+
 }

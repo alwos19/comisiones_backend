@@ -35,10 +35,10 @@ public class FacultadServiceImpl implements IFacultadService{
 		return facultadDao.save(facultad);
 	}
 
-	@Transactional
 	@Override
-	public void delete(Long id) {
-		facultadDao.deleteById(id);
+	@Transactional(readOnly = true)
+	public List<Facultad> findByNombreIgnoreCase(String nombre) {
+		return facultadDao.findByNombreIgnoreCase(nombre);
 	}
 
 }

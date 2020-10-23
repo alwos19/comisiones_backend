@@ -62,5 +62,11 @@ public class DocumentoRestController {
 	public void delete(@PathVariable Long id) {
 		documentoService.delete(id);
 	}
+	
+	@GetMapping("/documentos/filtrar-documentos/{nombre}")
+	@ResponseStatus(HttpStatus.OK)
+	public List<Documento> filtrarDocumentos(@PathVariable String nombre) {
+		return documentoService.findByNombreIgnoreCase(nombre);
+	} 
 
 }

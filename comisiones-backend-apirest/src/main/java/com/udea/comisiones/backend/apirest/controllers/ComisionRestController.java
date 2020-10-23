@@ -67,4 +67,12 @@ public class ComisionRestController {
 	public void delete(@PathVariable Long id) {
 		comisionService.delete(id);
 	}
+	
+
+	@GetMapping("/comisiones/filtrar-lugar-comisiones/{lugar}")
+	@ResponseStatus(HttpStatus.OK)
+	public List<Comision> filtrarComisiones(@PathVariable String lugar) {
+		return comisionService.findByLugarContainingIgnoreCase(lugar);	} 
+	
+	
 }

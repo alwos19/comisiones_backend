@@ -12,6 +12,6 @@ public interface IFacultadService {
 	
 	public Facultad save(Facultad facultad);
 	
-	public void delete(Long id);
+	public List<Facultad> findByNombreIgnoreCase(String nombre);
 
 }

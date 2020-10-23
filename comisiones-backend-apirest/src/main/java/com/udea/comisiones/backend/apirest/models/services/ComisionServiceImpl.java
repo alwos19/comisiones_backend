@@ -16,6 +16,7 @@ public class ComisionServiceImpl implements IComisionService {
 	private IComisionDao comisionDao;
 	
 	
+	
 	//
 
 	@Override
@@ -43,5 +44,12 @@ public class ComisionServiceImpl implements IComisionService {
 		comisionDao.deleteById(id);
 		
 	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Comision> findByLugarContainingIgnoreCase(String lugar) {
+		return comisionDao.findByLugarContainingIgnoreCase(lugar);
+	}
+
 
 }

@@ -13,5 +13,7 @@ public interface IDocumentoService {
 	public Documento save(Documento documento);
 	
 	public void delete(Long id);
+	
+	public List<Documento> findByNombreIgnoreCase(String nombre);
 
 }
