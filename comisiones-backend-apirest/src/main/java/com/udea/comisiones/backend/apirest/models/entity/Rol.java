@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -28,6 +29,7 @@ public class Rol implements Serializable {
 	private List<Usuario> usuarios;
 
 	//
+	@JsonCreator
 	public Rol() {
 		this.usuarios = new ArrayList<>();
 	}

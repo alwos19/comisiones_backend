@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -34,6 +35,7 @@ public class TipoSolicitud implements Serializable {
 	
 	//
 	
+	@JsonCreator
 	public TipoSolicitud() {
 		this.comision = new ArrayList<Comision>();
 	}
@@ -65,15 +67,19 @@ public class TipoSolicitud implements Serializable {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-
-	public List<Comision> getComisiones() {
+	
+	
+	public List<Comision> getComision() {
 		return comision;
 	}
 
-	public void setComisiones(List<Comision> comision) {
+	public void setComision(List<Comision> comision) {
 		this.comision = comision;
 	}
-	
+
+
+
+
 	private static final long serialVersionUID = 1L;
 	
 

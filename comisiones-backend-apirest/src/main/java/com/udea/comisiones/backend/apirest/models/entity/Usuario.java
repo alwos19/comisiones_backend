@@ -19,6 +19,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -58,12 +59,13 @@ public class Usuario implements Serializable {
 
 	@JsonIgnoreProperties({"usuario", "hibernateLazyInitializer", "handler"})
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.ALL)
-	private List<Comision> comisiones;
+	private List<Comision> comision;
 
 	//
 
+	@JsonCreator
 	public Usuario() {
-		this.comisiones = new ArrayList<>();
+		this.comision = new ArrayList<>();
 
 	}
 
@@ -90,13 +92,6 @@ public class Usuario implements Serializable {
 		this.tipoIdentificacion = tipoIdentificacion;
 	}
 
-	public Integer getIdetificacion() {
-		return identificacion;
-	}
-
-	public void setIdetificacion(Integer identificacion) {
-		this.identificacion = identificacion;
-	}
 
 	public String getNombre() {
 		return nombre;
@@ -130,12 +125,21 @@ public class Usuario implements Serializable {
 		this.createAt = createAt;
 	}
 
-	public List<Comision> getComisiones() {
-		return comisiones;
+
+	public Integer getIdentificacion() {
+		return identificacion;
 	}
 
-	public void setComisiones(List<Comision> comisiones) {
-		this.comisiones = comisiones;
+	public void setIdentificacion(Integer identificacion) {
+		this.identificacion = identificacion;
+	}
+
+	public List<Comision> getComision() {
+		return comision;
+	}
+
+	public void setComision(List<Comision> comision) {
+		this.comision = comision;
 	}
 
 	public Rol getRol() {
@@ -153,6 +157,8 @@ public class Usuario implements Serializable {
 	public void setDepartamento(Departamento departamento) {
 		this.departamento = departamento;
 	}
+	
+	
 
 	private static final long serialVersionUID = 1L;
 

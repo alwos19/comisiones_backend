@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -37,6 +38,7 @@ public class Facultad implements Serializable {
 	
 	//
 
+	@JsonCreator
 	public Facultad() {
 		this.departamento = new ArrayList<Departamento>();
 	}

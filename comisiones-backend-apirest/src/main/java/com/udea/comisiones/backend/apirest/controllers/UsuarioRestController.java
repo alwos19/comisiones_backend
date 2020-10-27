@@ -52,7 +52,7 @@ public class UsuarioRestController {
 		usuarioActual.setNombre(usuario.getNombre());
 		usuarioActual.setEmail(usuario.getEmail());
 		usuarioActual.setCreateAt(usuario.getCreateAt());
-		usuarioActual.setIdetificacion(usuario.getIdetificacion());
+		usuarioActual.setIdentificacion(usuario.getIdentificacion());
 		usuarioActual.setTipoIdentificacion(usuario.getTipoIdentificacion());
 		
 		return usuarioService.save(usuarioActual);

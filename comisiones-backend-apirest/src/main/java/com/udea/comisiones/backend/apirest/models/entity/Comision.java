@@ -20,6 +20,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -85,6 +86,7 @@ public class Comision implements Serializable {
 		createAt = new Date();
 	}
 
+	@JsonCreator
 	public Comision() {
 		this.documento = new ArrayList<Documento>();
 		this.cumplido = new ArrayList<Cumplido>();
