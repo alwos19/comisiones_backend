@@ -18,6 +18,11 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -30,24 +35,44 @@ public class Usuario implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "tipo_identificacion")
+	@NotBlank(message = "no debe estar en blanco")
+	@Size(max=5, message = "el tamaño debe estar entre 1 y 5 caracteres")
+	@Column(name = "tipo_identificacion", nullable=false)
 	private String tipoIdentificacion;
 
-	@Column(length = 12)
+	@NotNull(message = "no debe estar nulo")
+	@Column(unique = true, nullable=false)
 	private Integer identificacion;
 	
-	@Column(length = 30)
+	@NotBlank(message = "no debe estar en blanco")
+	@Size(max=30, message = "el tamaño debe estar entre 1 y 30 caracteres")
+	@Column(nullable=false)
 	private String nombre;
 	
-	@Column(length = 30)
+	@Size(max=30, message = "el tamaño debe estar entre 1 y 30 caracteres")
+	@Column(nullable=false)
 	private String apellido;
 	
-	@Column(length = 100)
+	@NotBlank(message = "no debe estar en blanco")
+	@Size(max=100, message = "el tamaño debe estar entre 1 y 100 caracteres")
+	@Email
+	@Column(unique = true, nullable=false)
 	private String email;
+	
+	@NotEmpty(message = "no debe estar vacio")
+	@Size(max=100)
+	@Column(nullable = false)
+	private String contrasena;
+	
+	@NotNull(message = "no debe estar vacio")
+	@Column(nullable = false)
+	private Integer estado;
 
 	@Column(name = "create_at")
 	@Temporal(TemporalType.DATE)
 	private Date createAt;
+	
+	//Foreign Keys
 
 	@JsonIgnoreProperties({"usuario", "hibernateLazyInitializer", "handler"})
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -56,12 +81,15 @@ public class Usuario implements Serializable {
 	@JsonIgnoreProperties({"usuario", "hibernateLazyInitializer", "handler"})
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Departamento departamento;
+	
+	//
 
 	@JsonIgnoreProperties({"usuario", "hibernateLazyInitializer", "handler"})
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.ALL)
 	private List<Comision> comision;
 
-	//
+	
+	//Constructor
 
 	@JsonCreator
 	public Usuario() {
@@ -74,7 +102,7 @@ public class Usuario implements Serializable {
 		createAt = new Date();
 	}
 
-	//
+	//Getters and Setters
 
 	public Long getId() {
 		return id;
@@ -158,7 +186,23 @@ public class Usuario implements Serializable {
 		this.departamento = departamento;
 	}
 	
-	
+	public String getContrasena() {
+		return contrasena;
+	}
+
+	public void setContrasena(String contrasena) {
+		this.contrasena = contrasena;
+	}
+
+	public Integer getEstado() {
+		return estado;
+	}
+
+	public void setEstado(Integer estado) {
+		this.estado = estado;
+	}
+
+
 
 	private static final long serialVersionUID = 1L;
 

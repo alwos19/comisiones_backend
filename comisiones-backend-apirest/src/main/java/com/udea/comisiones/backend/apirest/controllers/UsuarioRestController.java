@@ -1,8 +1,13 @@
 package com.udea.comisiones.backend.apirest.controllers;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,53 +32,171 @@ public class UsuarioRestController {
 	
 	//
 	
+	//CONSULTA LOS USUARIOS
 	@GetMapping("/usuarios")
 	public List<Usuario> index(){
 		return usuarioService.findAll();
 	}
 	
+	
+	
+	//CONSULTA UN USUARIO POR ID
 	@GetMapping("/usuarios/{id}")
-	public Usuario show(@PathVariable Long id) {
-		return usuarioService.findById(id);
+	public ResponseEntity<?> show(@PathVariable Long id) {
+		
+		Usuario usuario =  null; 
+		Map<String, Object> response = new HashMap<>();
+		
+		//---
+		try {
+			usuario = usuarioService.findById(id);
+		} catch(DataAccessException e) {
+			response.put("mensaje", "No se pudo realizar la consulta a la Base de Datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.INTERNAL_SERVER_ERROR);    
+		}
+		//---
+		
+		if (usuario == null) {
+			response.put("mensaje", "Error: El cliente con el ID: ".concat(id.toString()).concat(" NO existe en la Base de Datos"));
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.NOT_FOUND);
+		}
+		
+		return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
+		
 	}
 	
+	
+	//CREA UN USUARIO
 	@PostMapping("/usuarios")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Usuario create(@RequestBody Usuario usuario) {
-		return usuarioService.save(usuario);
+	public ResponseEntity<?> create(@RequestBody Usuario usuario) {
+		
+		Usuario usuarioNuevo =  null; 
+		Map<String, Object> response = new HashMap<>();
+		
+		//---
+		try {
+			usuarioNuevo = usuarioService.save(usuario);		
+		} catch(DataAccessException e) {
+			response.put("mensaje", "No se pudo realizar el insert en la Base de Datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.INTERNAL_SERVER_ERROR); 
+		}
+		//---
+		
+		response.put("mensaje", "El Usuario ha sido creado con éxito!");
+		response.put("usuario", usuarioNuevo);	
+		
+		return new ResponseEntity< Map<String, Object> >(response, HttpStatus.CREATED);
 	}
 	
+	
+	
+	//ACTUALIZA UN USUARIO
 	@PutMapping("/usuarios/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Usuario update(@RequestBody Usuario usuario, @PathVariable Long id) {
-		Usuario usuarioActual = usuarioService.findById(id);
+	public ResponseEntity<?> update(@RequestBody Usuario usuario, @PathVariable Long id) {
 		
-		usuarioActual.setApellido(usuario.getApellido());
-		usuarioActual.setNombre(usuario.getNombre());
-		usuarioActual.setEmail(usuario.getEmail());
-		usuarioActual.setCreateAt(usuario.getCreateAt());
-		usuarioActual.setIdentificacion(usuario.getIdentificacion());
-		usuarioActual.setTipoIdentificacion(usuario.getTipoIdentificacion());
+		Usuario usuarioConsulta = usuarioService.findById(id);  
+		Map<String, Object> response = new HashMap<>();
+		Usuario usuarioActulizado = null;
 		
-		return usuarioService.save(usuarioActual);
+		
+		if (usuarioConsulta == null) {
+			response.put("mensaje", "Error: No se puede Editar. El cliente con el ID: ".concat(id.toString()).concat(" NO existe en la Base de Datos"));
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.NOT_FOUND);
+		}
+		//---
+		try {
+			usuarioConsulta.setTipoIdentificacion(usuario.getTipoIdentificacion());
+			usuarioConsulta.setIdentificacion(usuario.getIdentificacion());
+			usuarioConsulta.setNombre(usuario.getNombre());
+			usuarioConsulta.setApellido(usuario.getApellido());
+			usuarioConsulta.setEmail(usuario.getEmail());
+			usuarioConsulta.setContrasena(usuario.getContrasena());
+			usuarioConsulta.setCreateAt(usuario.getCreateAt());
+			usuarioConsulta.setEstado(usuario.getEstado());
+			
+			usuarioActulizado = usuarioService.save(usuarioConsulta);
+					
+		}catch(DataAccessException e) {
+			response.put("mensaje", "No se pudo actualizar el usuario en la Base de Datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.INTERNAL_SERVER_ERROR);   
+		}
+		//---
+
+		
+		response.put("mensaje", "El Usuario ha sido actualizado con éxito!");
+		response.put("usuario", usuarioActulizado);
+		
+		return new ResponseEntity< Map<String, Object> >(response, HttpStatus.CREATED);	
 	}
 	
+	
+	
+	//ELIMINA UN USUARIO
 	@DeleteMapping("/usuarios/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable Long id) {
-		usuarioService.delete(id);
+	public ResponseEntity<?> delete(@PathVariable Long id) {
+		
+		Map<String, Object> response = new HashMap<>();
+		
+		//---
+		try {
+			usuarioService.delete(id);
+			
+		} catch(DataAccessException e) {
+			
+			response.put("mensaje", "No se pudo eliminar el usuario en la Base de Datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.INTERNAL_SERVER_ERROR);   
+		}
+		//---
+		
+		response.put("mensaje", "El Usuario ha sido eliminado con éxito!");
+		
+		return new ResponseEntity< Map<String, Object> >(response, HttpStatus.OK);
+		
 	}
 	
+	
+	
+	
+	//FILTRA USUARIOS POR APELLIDO
 	@GetMapping("/usuarios/filtrar-nombre-usuarios/{apellido}")
 	@ResponseStatus(HttpStatus.OK)
 	public List<Usuario> filtrarUsuariosByNombre(@PathVariable String apellido) {
 		return usuarioService.findByApellidoIgnoreCase(apellido);
 	}
 	
+	
+	
+	//FILTRA UN USUARIO POR IDENTIFICACION
 	@GetMapping("/usuarios/filtrar-identificacion-usuarios/{identificacion}")
 	@ResponseStatus(HttpStatus.OK)
-	public List<Usuario> filtrarUsuariosByIdentificacion(@PathVariable Integer identificacion) {
-		return usuarioService.findByIdentificacion(identificacion);
+	public ResponseEntity<?> filtrarUsuariosByIdentificacion(@PathVariable Integer identificacion) {
+		
+		Usuario usuario =  null; 
+		Map<String, Object> response = new HashMap<>();
+		
+		//---
+		try {
+			usuario = usuarioService.findByIdentificacion(identificacion);
+		} catch(DataAccessException e) {
+			response.put("mensaje", "No se pudo realizar la consulta a la Base de Datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.INTERNAL_SERVER_ERROR);    
+		}
+		//---
+		
+		if (usuario == null) {
+			response.put("mensaje", "Error: El cliente con la Identificación: ".concat(identificacion.toString()).concat(" NO existe en la Base de Datos"));
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.NOT_FOUND);
+		}
+		
+		return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
 	}
 	
 

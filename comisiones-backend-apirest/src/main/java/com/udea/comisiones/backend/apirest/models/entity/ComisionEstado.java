@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
 @Entity
-@Table(name="Comisiones_estados")
+@Table(name="comisiones_estados")
 public class ComisionEstado implements Serializable {
 
 	@Id

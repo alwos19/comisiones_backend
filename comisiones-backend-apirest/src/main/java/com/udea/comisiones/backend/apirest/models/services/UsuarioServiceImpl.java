@@ -50,7 +50,8 @@ public class UsuarioServiceImpl implements IUsuarioService{
 	}
 
 	@Override
-	public List<Usuario> findByIdentificacion(Integer identificacion) {
+	@Transactional(readOnly = true)
+	public Usuario findByIdentificacion(Integer identificacion) {
 		return usuarioDao.findByIdentificacion(identificacion);
 	}
 

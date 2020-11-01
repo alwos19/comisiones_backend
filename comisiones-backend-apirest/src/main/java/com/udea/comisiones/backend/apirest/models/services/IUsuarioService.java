@@ -14,7 +14,7 @@ public interface IUsuarioService {
 	
 	public void delete(Long id);
 	
-	public List<Usuario> findByIdentificacion(Integer identificacion);
+	public Usuario findByIdentificacion(Integer identificacion);
 	
 	public List<Usuario> findByApellidoIgnoreCase(String apellido);
 	

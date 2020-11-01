@@ -8,7 +8,7 @@ import com.udea.comisiones.backend.apirest.models.entity.Usuario;
 
 public interface IUsuarioDao extends CrudRepository<Usuario, Long>{
 	
-	public List<Usuario> findByIdentificacion(Integer identificacion);
+	public Usuario findByIdentificacion(Integer identificacion);
 	
 	public List<Usuario> findByApellidoIgnoreCase(String apellido);
 

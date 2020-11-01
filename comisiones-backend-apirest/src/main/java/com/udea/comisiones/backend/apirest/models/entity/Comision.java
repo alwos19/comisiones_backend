@@ -31,31 +31,40 @@ public class Comision implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "fecha_inicio")
+	@Column(name = "fecha_inicio", nullable=false)
 	private Date fechaInicio;
 
-	@Column(name = "fecha_fin")
+	@Column(name = "fecha_fin", nullable=false)
 	private Date fechaFin;
 
-	@Column(name = "create_at")
+	@Column(name = "create_at", nullable=false)
 	@Temporal(TemporalType.DATE)
 	private Date createAt;
 
-	@Column(name = "fecha_actualizacion")
+	@Column(name = "fecha_actualizacion", nullable=false)
 	private Date fechaActulizacion;
-
+	
+	@Column(length=300, nullable=false)
 	private String justificacion;
+	
+	@Column(length=45)
 	private String resolucion;
 
 	@Column(name = "fecha_resolucion")
 	private Date fechaResolucion;
 
-	@Column(name = "respuesta_devolucion")
+	@Column(name = "respuesta_devolucion", length=255)
 	private String respuestaDevolucion;
 
+	@Column(length=45)
 	private String idioma;
+	
+	@Column(length=45)
 	private String lugar;
 
+	
+	//
+	
 	
 	@JsonIgnoreProperties({"comision", "hibernateLazyInitializer", "handler"})
 	@ManyToOne(fetch = FetchType.LAZY)
