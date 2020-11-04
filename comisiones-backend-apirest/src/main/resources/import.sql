@@ -21,12 +21,14 @@ INSERT INTO usuarios (tipo_identificacion, identificacion, nombre, apellido, ema
 INSERT INTO usuarios (tipo_identificacion, identificacion, nombre, apellido, email, contrasena, estado, create_at) VALUES ('CC', 400, 'Walter', 'Skinner', 'skinner@fbi.co', '123',1,  NOW());
 INSERT INTO usuarios (tipo_identificacion, identificacion, nombre, apellido, email, contrasena, estado, create_at) VALUES ('CC', 500, 'CGB', 'Spencer', 'watergate@fbi.co', '123', 2,  NOW());
 
-INSERT INTO comisiones (fecha_inicio, fecha_fin, create_at, fecha_actualizacion, lugar, usuario_id) VALUES (NOW(), NOW(), NOW(), NOW(),'Tunguska', 2);
-INSERT INTO comisiones (fecha_inicio, fecha_fin, create_at, fecha_actualizacion, lugar, idioma, tipo_solicitud_id, usuario_id) VALUES (NOW(), NOW(), NOW(), NOW(),'US', 'ingles', 1, 1);
-INSERT INTO comisiones (fecha_inicio, fecha_fin, create_at, fecha_actualizacion, lugar, justificacion, idioma, usuario_id) VALUES (NOW(), NOW(), NOW(), NOW(),'Tunguska', 'astrobiologia','Ruso' , 3);
-INSERT INTO comisiones (fecha_inicio, fecha_fin, create_at, fecha_actualizacion, lugar, idioma, usuario_id) VALUES (NOW(), NOW(), NOW(), NOW(),'Inglaterra', 'ingles', 5);
+INSERT INTO comisiones (fecha_inicio, fecha_fin, create_at, fecha_actualizacion, lugar,  justificacion, usuario_id) VALUES (NOW(), NOW(), NOW(), NOW(),'Tunguska','asteroide', 2);
+INSERT INTO comisiones (fecha_inicio, fecha_fin, create_at, fecha_actualizacion, lugar, justificacion, idioma, tipo_solicitud_id, usuario_id) VALUES (NOW(), NOW(), NOW(), NOW(),'US', 'asteroide','ingles', 1, 1);
+INSERT INTO comisiones (fecha_inicio, fecha_fin, create_at, fecha_actualizacion, lugar, justificacion, idioma, usuario_id) VALUES (NOW(), NOW(), NOW(), NOW(),'Tunguska', 'asteroide','Ruso' , 3);
+INSERT INTO comisiones (fecha_inicio, fecha_fin, create_at, fecha_actualizacion, lugar, justificacion, idioma) VALUES (NOW(), NOW(), NOW(), NOW(),'Inglaterra', 'asteroide','ingles');
 
 INSERT INTO comisiones_estados(create_at, comision_id, estado_id) VALUES (NOW(), 4, 1);
+INSERT INTO comisiones_estados(create_at, comision_id, estado_id) VALUES (NOW(), 4, 2);
+
 
 INSERT INTO cumplidos (nombre, descripcion, informacion_complementaria, fecha_envio, fecha_confirmacion, correo, comision_id) VALUES ('cumplido_1', 'purity_control', 'black-oil', NOW(), NOW(), '@USSR', 1);
 

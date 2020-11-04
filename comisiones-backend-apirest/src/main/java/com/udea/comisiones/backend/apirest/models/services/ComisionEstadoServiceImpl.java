@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.udea.comisiones.backend.apirest.models.dao.IComisionEstadoDao;
+import com.udea.comisiones.backend.apirest.models.entity.Comision;
 import com.udea.comisiones.backend.apirest.models.entity.ComisionEstado;
+import com.udea.comisiones.backend.apirest.models.entity.Estado;
 
 @Service
 public class ComisionEstadoServiceImpl implements IComisionEstadoService{
@@ -40,6 +42,17 @@ public class ComisionEstadoServiceImpl implements IComisionEstadoService{
 	public void delete(Long id) {
 		comisionEstadoDao.deleteById(id);
 		
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<ComisionEstado> findByComision(Comision comision){
+		return comisionEstadoDao.findByComision(comision);
+	}
+
+	@Override
+	public List<ComisionEstado> findByEstado(Estado estado) {
+		return comisionEstadoDao.findByEstado(estado);
 	}
 
 }

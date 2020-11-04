@@ -34,10 +34,10 @@ public class Cumplido implements Serializable {
 	@Column(nullable = false)
 	private String descripcion;
 	
-	@Column(name = "fecha_envio", nullable = false)
+	@Column(name = "fecha_envio")
 	private Date fechaEnvio;
 	
-	@Column(name = "fecha_confirmacion", nullable = false)
+	@Column(name = "fecha_confirmacion")
 	private Date fechaConfirmacion;
 	
 	@NotBlank(message = "no debe estar en blanco")

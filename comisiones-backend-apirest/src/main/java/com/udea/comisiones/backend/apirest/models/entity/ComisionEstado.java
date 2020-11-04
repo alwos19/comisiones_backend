@@ -14,7 +14,6 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -28,8 +27,7 @@ public class ComisionEstado implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotBlank(message = "no debe estar en blanco")
-	@Column(name = "create_at", nullable=false)
+	@Column(name = "create_at")
 	@Temporal(TemporalType.DATE)
 	private Date createAt;
 	

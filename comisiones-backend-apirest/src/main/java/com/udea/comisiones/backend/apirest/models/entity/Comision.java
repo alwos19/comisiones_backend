@@ -34,21 +34,17 @@ public class Comision implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotBlank(message = "no debe estar en blanco")
-	@Column(name = "fecha_inicio", nullable=false)
+	@Column(name = "fecha_inicio")
 	private Date fechaInicio;
 
-	@NotBlank(message = "no debe estar en blanco")
-	@Column(name = "fecha_fin", nullable=false)
+	@Column(name = "fecha_fin")
 	private Date fechaFin;
 
-	@NotBlank(message = "no debe estar en blanco")
-	@Column(name = "create_at", nullable=false)
+	@Column(name = "create_at")
 	@Temporal(TemporalType.DATE)
 	private Date createAt;
 
-	@NotBlank(message = "no debe estar en blanco")
-	@Column(name = "fecha_actualizacion", nullable=false)
+	@Column(name = "fecha_actualizacion")
 	private Date fechaActulizacion;
 	
 	@NotBlank(message = "no debe estar en blanco")
@@ -244,9 +240,6 @@ public class Comision implements Serializable {
 	public void setTipoSolicitud(TipoSolicitud tipoSolicitud) {
 		this.tipoSolicitud = tipoSolicitud;
 	}
-
-	
-	//
 
 
 	private static final long serialVersionUID = 1L;
