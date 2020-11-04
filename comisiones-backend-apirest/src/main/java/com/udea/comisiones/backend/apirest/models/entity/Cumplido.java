@@ -11,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -22,26 +24,37 @@ public class Cumplido implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@NotBlank(message = "no debe estar en blanco")
+	@Size(max=20, message = "el tamaño debe estar entre 1 y 20 caracteres")
+	@Column(nullable = false)
 	private String nombre;
+	
+	@NotBlank(message = "no debe estar en blanco")
+	@Size(max=255, message = "el tamaño debe estar entre 1 y 255 caracteres")
+	@Column(nullable = false)
 	private String descripcion;
 	
-	@Column(name = "fecha_envio")
+	@Column(name = "fecha_envio", nullable = false)
 	private Date fechaEnvio;
 	
-	@Column(name = "fecha_confirmacion")
+	@Column(name = "fecha_confirmacion", nullable = false)
 	private Date fechaConfirmacion;
 	
+	@NotBlank(message = "no debe estar en blanco")
+	@Column(nullable = false)
 	private String correo;
 	
 	@Column(name = "informacion_complementaria")
 	private String informacionComplementaria;
+	
+	//Foreign Keys
 	
 	@JsonIgnoreProperties({"cumplido", "hibernateLazyInitializer", "handler"})
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Comision comision;
 	
 	
-	//
+	//Getters and Setters
 
 	public Long getId() {
 		return id;

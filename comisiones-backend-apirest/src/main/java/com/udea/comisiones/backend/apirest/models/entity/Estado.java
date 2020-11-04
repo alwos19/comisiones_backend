@@ -14,6 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -28,9 +30,15 @@ public class Estado implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@NotBlank(message = "no debe estar en blanco")
+	@Size(max=45, message = "el tamaño debe estar entre 1 y 45 caracteres")
+	@Column(nullable=false)
 	private String nombre;
 	
+	@Size(max=45, message = "el tamaño debe estar entre 1 y 45 caracteres")
 	private String descripcion;
+	
+	//Foreign Keys
 	
 	@JsonIgnoreProperties({"estado", "hibernateLazyInitializer", "handler"})
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "estado", cascade = CascadeType.ALL)
@@ -46,7 +54,8 @@ public class Estado implements Serializable{
 	}
 	
 
-	//
+	//Getters and Setters
+	
 	public Long getId() {
 		return id;
 	}

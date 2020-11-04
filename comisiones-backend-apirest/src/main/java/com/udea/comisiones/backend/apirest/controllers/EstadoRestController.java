@@ -1,9 +1,17 @@
 package com.udea.comisiones.backend.apirest.controllers;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,38 +33,120 @@ public class EstadoRestController  {
 	@Autowired
 	private IEstadoService estadoService;
 	
-	//
-	
+	//CONSULTA TODOS
 	@GetMapping("/estados")
 	public List<Estado> index(){
 		return estadoService.findAll();
 	}
 	
+	//CONSULTA POR ID
 	@GetMapping("/estados/{id}")
-	public Estado show(@PathVariable Long id) {
-		return estadoService.findById(id);
+	public ResponseEntity<?> show(@PathVariable Long id) {
+		
+		Estado estado =  null; 
+		Map<String, Object> response = new HashMap<>();
+		
+		//---
+		try {
+			estado = estadoService.findById(id);
+		} catch(DataAccessException e) {
+			response.put("mensaje", "No se pudo realizar la consulta a la Base de Datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.INTERNAL_SERVER_ERROR);    
+		}
+		//---
+		
+		if (estado == null) {
+			response.put("mensaje", "Error: El estado con el ID: ".concat(id.toString()).concat(" NO existe en la Base de Datos"));
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.NOT_FOUND);
+		}
+		
+		return new ResponseEntity<Estado>(estado, HttpStatus.OK);
 	}
 	
+	//CREA
 	@PostMapping("/estados")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Estado create(@RequestBody Estado estado) {
-		return estadoService.save(estado);
+	public ResponseEntity<?> create(@Valid @RequestBody Estado estado, BindingResult result) {
+		
+		Estado estadoNuevo =  null; 
+		Map<String, Object> response = new HashMap<>();
+		
+		if(result.hasErrors()){
+			
+			List<String> errors = result.getFieldErrors()
+					.stream()  
+					.map(err -> "El campo '" + err.getField() + "' " + err.getDefaultMessage()) 
+					.collect(Collectors.toList()); 
+			
+			response.put("error", errors);
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.BAD_REQUEST);   
+		}
+		
+		//---
+		try {
+			estadoNuevo = estadoService.save(estado);		
+		} catch(DataAccessException e) {
+			response.put("mensaje", "No se pudo realizar el insert en la Base de Datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.INTERNAL_SERVER_ERROR); 
+		}
+		//---
+		
+		response.put("mensaje", "El estado ha sido creado con éxito!");
+		response.put("estado", estadoNuevo);	
+		
+		return new ResponseEntity< Map<String, Object> >(response, HttpStatus.CREATED);
 	}
 	
+	//ACTUALIZA
 	@PutMapping("/estados/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Estado update(@RequestBody Estado estado, @PathVariable Long id) {
+	public ResponseEntity<?> update(@Valid @RequestBody Estado estado, BindingResult result, @PathVariable Long id) {
 		
-		Estado estadoActual = estadoService.findById(id);
+		Estado estadoActual  = estadoService.findById(id);  
+		Map<String, Object> response = new HashMap<>();
+		Estado estadoActulizado = null;
 		
-		estadoActual.setNombre(estado.getNombre());
-		estadoActual.setDescripcion(estado.getDescripcion());
+		if(result.hasErrors()){
+			
+			List<String> errors = result.getFieldErrors()
+					.stream()  
+					.map(err -> "El campo '" + err.getField() + "' " + err.getDefaultMessage()) 
+					.collect(Collectors.toList()); 
+			
+			response.put("error", errors);
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.BAD_REQUEST);   
+		}
 		
-		return estadoService.save(estadoActual);
+		if (estadoActual == null) {
+			response.put("mensaje", "Error: No se puede Editar. El estado con el ID: ".concat(id.toString()).concat(" NO existe en la Base de Datos"));
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.NOT_FOUND);
+		}
+		
+		//---
+		try {
+			estadoActual.setNombre(estado.getNombre());
+			estadoActual.setDescripcion(estado.getDescripcion());
+			
+			estadoActulizado = estadoService.save(estadoActual);
+					
+		}catch(DataAccessException e) {
+			response.put("mensaje", "No se pudo actualizar el estado en la Base de Datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.INTERNAL_SERVER_ERROR);   
+		}
+		//---
+
+		
+		response.put("mensaje", "El estado ha sido actualizado con éxito!");
+		response.put("estado", estadoActulizado);
+		
+		return new ResponseEntity< Map<String, Object> >(response, HttpStatus.CREATED);	
 		
 	}
 	
-	
+	//FILTRA POR NOMBRE
 	@GetMapping("/estados/filtrar-estados/{nombre}")
 	@ResponseStatus(HttpStatus.OK)
 	public List<Estado> filtrarEstados(@PathVariable String nombre) {

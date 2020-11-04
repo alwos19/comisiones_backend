@@ -1,5 +1,5 @@
-INSERT INTO facultades (nombre) VALUES ('FCEN');
-INSERT INTO facultades (nombre) VALUES ('INGENIERIA');
+INSERT INTO facultades (nombre, centro_de_costo) VALUES ('FCEN', 1);
+INSERT INTO facultades (nombre, centro_de_costo) VALUES ('INGENIERIA', 1);
 
 INSERT INTO departamentos (nombre, facultad_id) VALUES ('Fisica', 1);
 INSERT INTO departamentos (nombre, facultad_id) VALUES ('Biologia', 1);
@@ -15,22 +15,22 @@ INSERT INTO estados(nombre) VALUES ('En-Secretaria');
 INSERT INTO estados(nombre) VALUES ('En-Decanato');
 
 
-INSERT INTO usuarios (tipo_identificacion, identificacion, nombre, apellido, email, contrasena, estado, departamento_id, rol_id) VALUES ('CC', 100, 'Dana', 'Scully', 'fbi@queequeg.co', '123', 1, 1, 1);
-INSERT INTO usuarios (tipo_identificacion, identificacion, nombre, apellido, email, contrasena, estado,  departamento_id, rol_id) VALUES ('CC',200, 'Fox', 'Mulder', 'fbi@trustno1.co', '123',1, 1, 1);
-INSERT INTO usuarios (tipo_identificacion, identificacion, nombre, apellido, email, contrasena, estado,  departamento_id,  rol_id) VALUES ('CC',300, 'Alex', 'Krycek', 'fbi@sindicate.co', '123', 0, 2, 2);
-INSERT INTO usuarios (tipo_identificacion, identificacion, nombre, apellido, email, contrasena, estado) VALUES ('CC', 400, 'Walter', 'Skinner', 'skinner@fbi.co', '123',1);
-INSERT INTO usuarios (tipo_identificacion, identificacion, nombre, apellido, email, contrasena, estado) VALUES ('CC', 500, 'CGB', 'Spencer', 'watergate@fbi.co', '123', 2);
+INSERT INTO usuarios (tipo_identificacion, identificacion, nombre, apellido, email, contrasena, estado, create_at, departamento_id, rol_id) VALUES ('CC', 100, 'Dana', 'Scully', 'fbi@queequeg.co', '123', 1, NOW(), 1, 1);
+INSERT INTO usuarios (tipo_identificacion, identificacion, nombre, apellido, email, contrasena, estado, create_at,  departamento_id, rol_id) VALUES ('CC',200, 'Fox', 'Mulder', 'fbi@trustno1.co', '123',1, NOW(), 1, 1);
+INSERT INTO usuarios (tipo_identificacion, identificacion, nombre, apellido, email, contrasena, estado, create_at,  departamento_id,  rol_id) VALUES ('CC',300, 'Alex', 'Krycek', 'fbi@sindicate.co', '123', 0,  NOW(), 2, 2);
+INSERT INTO usuarios (tipo_identificacion, identificacion, nombre, apellido, email, contrasena, estado, create_at) VALUES ('CC', 400, 'Walter', 'Skinner', 'skinner@fbi.co', '123',1,  NOW());
+INSERT INTO usuarios (tipo_identificacion, identificacion, nombre, apellido, email, contrasena, estado, create_at) VALUES ('CC', 500, 'CGB', 'Spencer', 'watergate@fbi.co', '123', 2,  NOW());
 
-INSERT INTO comisiones (lugar, usuario_id) VALUES ('Tunguska', 2);
-INSERT INTO comisiones (lugar, idioma, tipo_solicitud_id, usuario_id) VALUES ('US', 'ingles', 1, 1);
-INSERT INTO comisiones (lugar, justificacion, idioma, usuario_id) VALUES ('Tunguska', 'astrobiologia','Ruso' , 3);
-INSERT INTO comisiones (lugar, idioma, usuario_id) VALUES ('Inglaterra', 'ingles', 5);
+INSERT INTO comisiones (fecha_inicio, fecha_fin, create_at, fecha_actualizacion, lugar, usuario_id) VALUES (NOW(), NOW(), NOW(), NOW(),'Tunguska', 2);
+INSERT INTO comisiones (fecha_inicio, fecha_fin, create_at, fecha_actualizacion, lugar, idioma, tipo_solicitud_id, usuario_id) VALUES (NOW(), NOW(), NOW(), NOW(),'US', 'ingles', 1, 1);
+INSERT INTO comisiones (fecha_inicio, fecha_fin, create_at, fecha_actualizacion, lugar, justificacion, idioma, usuario_id) VALUES (NOW(), NOW(), NOW(), NOW(),'Tunguska', 'astrobiologia','Ruso' , 3);
+INSERT INTO comisiones (fecha_inicio, fecha_fin, create_at, fecha_actualizacion, lugar, idioma, usuario_id) VALUES (NOW(), NOW(), NOW(), NOW(),'Inglaterra', 'ingles', 5);
 
 INSERT INTO comisiones_estados(create_at, comision_id, estado_id) VALUES (NOW(), 4, 1);
 
-INSERT INTO cumplidos (nombre, informacion_complementaria, comision_id) VALUES ('cumplido_1', 'purity_control', 1);
+INSERT INTO cumplidos (nombre, descripcion, informacion_complementaria, fecha_envio, fecha_confirmacion, correo, comision_id) VALUES ('cumplido_1', 'purity_control', 'black-oil', NOW(), NOW(), '@USSR', 1);
 
-INSERT INTO documentos (nombre, comision_id) VALUES ('xfile', 1);
+INSERT INTO documentos (nombre, es_anexo, es_cumplido, comision_id) VALUES ('xfile', true, false, 1);
 
 
 

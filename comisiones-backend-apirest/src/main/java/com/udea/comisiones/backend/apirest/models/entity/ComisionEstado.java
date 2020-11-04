@@ -14,6 +14,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -27,9 +28,12 @@ public class ComisionEstado implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "create_at")
+	@NotBlank(message = "no debe estar en blanco")
+	@Column(name = "create_at", nullable=false)
 	@Temporal(TemporalType.DATE)
 	private Date createAt;
+	
+	//Foreign Keys
 	
 	@JsonIgnoreProperties({"comisionEstado", "hibernateLazyInitializer", "handler"})
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -47,7 +51,7 @@ public class ComisionEstado implements Serializable {
 		createAt = new Date();
 	}
 	
-	//
+	//Getters and Setters
 
 
 	public Long getId() {

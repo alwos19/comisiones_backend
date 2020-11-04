@@ -19,6 +19,8 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -27,43 +29,51 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Table(name = "comisiones")
 public class Comision implements Serializable {
 
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NotBlank(message = "no debe estar en blanco")
 	@Column(name = "fecha_inicio", nullable=false)
 	private Date fechaInicio;
 
+	@NotBlank(message = "no debe estar en blanco")
 	@Column(name = "fecha_fin", nullable=false)
 	private Date fechaFin;
 
+	@NotBlank(message = "no debe estar en blanco")
 	@Column(name = "create_at", nullable=false)
 	@Temporal(TemporalType.DATE)
 	private Date createAt;
 
+	@NotBlank(message = "no debe estar en blanco")
 	@Column(name = "fecha_actualizacion", nullable=false)
 	private Date fechaActulizacion;
 	
-	@Column(length=300, nullable=false)
+	@NotBlank(message = "no debe estar en blanco")
+	@Size(max=300, message = "el tamaño debe estar entre 1 y 300 caracteres")
+	@Column(nullable=false)
 	private String justificacion;
 	
-	@Column(length=45)
+	@Size(max=45, message = "el tamaño debe ser máximo de 45 caracteres")
 	private String resolucion;
 
 	@Column(name = "fecha_resolucion")
 	private Date fechaResolucion;
 
-	@Column(name = "respuesta_devolucion", length=255)
+	@Size(max=255, message = "el tamaño debe ser máximo de 255 caracteres")
+	@Column(name = "respuesta_devolucion")
 	private String respuestaDevolucion;
 
-	@Column(length=45)
+	@Size(max=45, message = "el tamaño debe ser máximo de 45 caracteres")
 	private String idioma;
 	
-	@Column(length=45)
+	@Size(max=45, message = "el tamaño debe ser máximo de 45 caracteres")
 	private String lugar;
 
 	
-	//
+	//Foreign Keys
 	
 	
 	@JsonIgnoreProperties({"comision", "hibernateLazyInitializer", "handler"})
@@ -88,6 +98,7 @@ public class Comision implements Serializable {
 	@JoinColumn(name = "tipo_solicitud_id")
 	private TipoSolicitud tipoSolicitud;
 	
+	
 	//
 
 	@PrePersist
@@ -103,7 +114,7 @@ public class Comision implements Serializable {
 	}
 
 	
-	//
+	//Getters and Setters
 
 	public Long getId() {
 		return id;

@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -22,20 +24,25 @@ public class Documento implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@Size(max=45, message = "el tamaño debe de máximo 45 caracteres")
 	private String nombre;
 	
-	@Column(name = "es_anexo")
+	@NotNull(message = "no debe estar vacio")
+	@Column(name = "es_anexo", nullable=false)
 	private Boolean esAnexo;
 	
-	@Column(name = "es_cumplido")
+	@NotNull(message = "no debe estar vacio")
+	@Column(name = "es_cumplido", nullable=false)
 	private Boolean esCumplido;
+	
+	//Foreign Keys
 	
 	@JsonIgnoreProperties({"documento", "hibernateLazyInitializer", "handler"})
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Comision comision;
 	
 	
-	//
+	//Getters and Setters
 
 	public Long getId() {
 		return id;

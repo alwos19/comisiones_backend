@@ -1,9 +1,17 @@
 package com.udea.comisiones.backend.apirest.controllers;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,43 +34,145 @@ public class DocumentoRestController {
 	@Autowired
 	private IDocumentoService documentoService;
 	
-	//
-	
+	///CONSULTA TODOS
 	@GetMapping("/documentos")
 	public List<Documento> index(){
 		return documentoService.findAll();
 	}
 	
+	//CONSULTA POR ID
 	@GetMapping("/documentos/{id}")
-	public Documento show(@PathVariable Long id) {
-		return documentoService.findById(id);
+	public ResponseEntity<?> show(@PathVariable Long id) {
+		
+		Documento documento =  null; 
+		Map<String, Object> response = new HashMap<>();
+		
+		//---
+		try {
+			documento = documentoService.findById(id);
+		} catch(DataAccessException e) {
+			response.put("mensaje", "No se pudo realizar la consulta a la Base de Datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.INTERNAL_SERVER_ERROR);    
+		}
+		//---
+		
+		if (documento == null) {
+			response.put("mensaje", "Error: El documento con el ID: ".concat(id.toString()).concat(" NO existe en la Base de Datos"));
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.NOT_FOUND);
+		}
+		
+		return new ResponseEntity<Documento>(documento, HttpStatus.OK);
 	}
 	
+	//CREA
 	@PostMapping("/documentos")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Documento create(@RequestBody Documento documento) {
-		return documentoService.save(documento);
+	public ResponseEntity<?> create(@Valid @RequestBody Documento documento, BindingResult result) {
+		
+		Documento documentoNuevo =  null; 
+		Map<String, Object> response = new HashMap<>();
+		
+		if(result.hasErrors()){
+			
+			List<String> errors = result.getFieldErrors()
+					.stream()  
+					.map(err -> "El campo '" + err.getField() + "' " + err.getDefaultMessage()) 
+					.collect(Collectors.toList()); 
+			
+			response.put("error", errors);
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.BAD_REQUEST);   
+		}
+		
+		//---
+		try {
+			documentoNuevo = documentoService.save(documento);	
+		} catch(DataAccessException e) {
+			response.put("mensaje", "No se pudo realizar el insert en la Base de Datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.INTERNAL_SERVER_ERROR); 
+		}
+		//---
+		
+		response.put("mensaje", "El documento ha sido creado con éxito!");
+		response.put("documento", documentoNuevo);	
+		
+		return new ResponseEntity< Map<String, Object> >(response, HttpStatus.CREATED);
 	}
 	
+	//ACTUALIZA
 	@PutMapping("/documentos/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Documento update(@RequestBody Documento documento, @PathVariable Long id) {
-		Documento documentoActual = documentoService.findById(id);
+	public ResponseEntity<?> update(@Valid @RequestBody Documento documento, BindingResult result, @PathVariable Long id) {
 		
-		documentoActual.setNombre(documento.getNombre());
-		documentoActual.setEsCumplido(documento.getEsCumplido());
-		documentoActual.setEsAnexo(documento.getEsAnexo());
+		Documento documentoActual = documentoService.findById(id);
+		Map<String, Object> response = new HashMap<>();
+		Documento documentoActulizado = null;
+		
+		if(result.hasErrors()){
+			
+			List<String> errors = result.getFieldErrors()
+					.stream()  
+					.map(err -> "El campo '" + err.getField() + "' " + err.getDefaultMessage()) 
+					.collect(Collectors.toList()); 
+			
+			response.put("error", errors);
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.BAD_REQUEST);   
+		}
+		
+		if (documentoActual == null) {
+			response.put("mensaje", "Error: No se puede Editar. El documento con el ID: ".concat(id.toString()).concat(" NO existe en la Base de Datos"));
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.NOT_FOUND);
+		}
+		
+		//---
+		try {
+			documentoActual.setNombre(documento.getNombre());
+			documentoActual.setEsCumplido(documento.getEsCumplido());
+			documentoActual.setEsAnexo(documento.getEsAnexo());
+			
+			documentoActulizado = documentoService.save(documentoActual);
+					
+		}catch(DataAccessException e) {
+			response.put("mensaje", "No se pudo actualizar el documento en la Base de Datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.INTERNAL_SERVER_ERROR);   
+		}
+		//---
 
 		
-		return documentoService.save(documentoActual);
+		response.put("mensaje", "El documento ha sido actualizado con éxito!");
+		response.put("documento", documentoActulizado);
+		
+		return new ResponseEntity< Map<String, Object> >(response, HttpStatus.CREATED);	
 	}
 	
+	//ELIMINA
 	@DeleteMapping("/documentos/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable Long id) {
-		documentoService.delete(id);
+	public ResponseEntity<?> delete(@PathVariable Long id) {
+		
+		Map<String, Object> response = new HashMap<>();
+		
+		//---
+		try {
+			documentoService.delete(id);
+			
+		} catch(DataAccessException e) {
+			
+			response.put("mensaje", "No se pudo eliminar el documento en la Base de Datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.INTERNAL_SERVER_ERROR);   
+		}
+		//---
+		
+		response.put("mensaje", "El documento ha sido eliminado con éxito!");
+		
+		return new ResponseEntity< Map<String, Object> >(response, HttpStatus.OK);
+		
 	}
 	
+	//FILTRA POR NOMBRE
 	@GetMapping("/documentos/filtrar-documentos/{nombre}")
 	@ResponseStatus(HttpStatus.OK)
 	public List<Documento> filtrarDocumentos(@PathVariable String nombre) {

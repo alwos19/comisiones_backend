@@ -40,7 +40,7 @@ public class Usuario implements Serializable {
 	@Column(name = "tipo_identificacion", nullable=false)
 	private String tipoIdentificacion;
 
-	@NotNull(message = "no debe estar nulo")
+	@NotNull(message = "no debe ser nulo")
 	@Column(unique = true, nullable=false)
 	private Integer identificacion;
 	
@@ -49,6 +49,7 @@ public class Usuario implements Serializable {
 	@Column(nullable=false)
 	private String nombre;
 	
+	@NotBlank(message = "no debe estar en blanco")
 	@Size(max=30, message = "el tamaño debe estar entre 1 y 30 caracteres")
 	@Column(nullable=false)
 	private String apellido;
@@ -59,7 +60,7 @@ public class Usuario implements Serializable {
 	@Column(unique = true, nullable=false)
 	private String email;
 	
-	@NotEmpty(message = "no debe estar vacio")
+	@NotEmpty(message = "no debe estar vacio")  //puede estar en blanco
 	@Size(max=100)
 	@Column(nullable = false)
 	private String contrasena;
@@ -68,7 +69,7 @@ public class Usuario implements Serializable {
 	@Column(nullable = false)
 	private Integer estado;
 
-	@Column(name = "create_at")
+	@Column(name = "create_at", nullable = false)
 	@Temporal(TemporalType.DATE)
 	private Date createAt;
 	

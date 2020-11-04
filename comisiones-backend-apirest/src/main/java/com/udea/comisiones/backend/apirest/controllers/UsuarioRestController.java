@@ -3,11 +3,15 @@ package com.udea.comisiones.backend.apirest.controllers;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +34,6 @@ public class UsuarioRestController {
 	@Autowired
 	private IUsuarioService usuarioService;
 	
-	//
 	
 	//CONSULTA LOS USUARIOS
 	@GetMapping("/usuarios")
@@ -58,7 +61,7 @@ public class UsuarioRestController {
 		//---
 		
 		if (usuario == null) {
-			response.put("mensaje", "Error: El cliente con el ID: ".concat(id.toString()).concat(" NO existe en la Base de Datos"));
+			response.put("mensaje", "Error: El usuario con el ID: ".concat(id.toString()).concat(" NO existe en la Base de Datos"));
 			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.NOT_FOUND);
 		}
 		
@@ -70,10 +73,21 @@ public class UsuarioRestController {
 	//CREA UN USUARIO
 	@PostMapping("/usuarios")
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<?> create(@RequestBody Usuario usuario) {
+	public ResponseEntity<?> create(@Valid @RequestBody Usuario usuario, BindingResult result) {
 		
 		Usuario usuarioNuevo =  null; 
 		Map<String, Object> response = new HashMap<>();
+		
+		if(result.hasErrors()){
+			
+			List<String> errors = result.getFieldErrors()
+					.stream()  
+					.map(err -> "El campo '" + err.getField() + "' " + err.getDefaultMessage()) 
+					.collect(Collectors.toList()); 
+			
+			response.put("error", errors);
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.BAD_REQUEST);   
+		}
 		
 		//---
 		try {
@@ -85,7 +99,7 @@ public class UsuarioRestController {
 		}
 		//---
 		
-		response.put("mensaje", "El Usuario ha sido creado con éxito!");
+		response.put("mensaje", "El usuario ha sido creado con éxito!");
 		response.put("usuario", usuarioNuevo);	
 		
 		return new ResponseEntity< Map<String, Object> >(response, HttpStatus.CREATED);
@@ -96,29 +110,40 @@ public class UsuarioRestController {
 	//ACTUALIZA UN USUARIO
 	@PutMapping("/usuarios/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<?> update(@RequestBody Usuario usuario, @PathVariable Long id) {
+	public ResponseEntity<?> update(@Valid @RequestBody Usuario usuario, BindingResult result, @PathVariable Long id) {
 		
-		Usuario usuarioConsulta = usuarioService.findById(id);  
+		Usuario usuarioActual = usuarioService.findById(id);  
 		Map<String, Object> response = new HashMap<>();
 		Usuario usuarioActulizado = null;
 		
+		if(result.hasErrors()){
+			
+			List<String> errors = result.getFieldErrors()
+					.stream()  
+					.map(err -> "El campo '" + err.getField() + "' " + err.getDefaultMessage()) 
+					.collect(Collectors.toList()); 
+			
+			response.put("error", errors);
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.BAD_REQUEST);   
+		}
 		
-		if (usuarioConsulta == null) {
-			response.put("mensaje", "Error: No se puede Editar. El cliente con el ID: ".concat(id.toString()).concat(" NO existe en la Base de Datos"));
+		if (usuarioActual == null) {
+			response.put("mensaje", "Error: No se puede Editar. El usuario con el ID: ".concat(id.toString()).concat(" NO existe en la Base de Datos"));
 			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.NOT_FOUND);
 		}
+		
 		//---
 		try {
-			usuarioConsulta.setTipoIdentificacion(usuario.getTipoIdentificacion());
-			usuarioConsulta.setIdentificacion(usuario.getIdentificacion());
-			usuarioConsulta.setNombre(usuario.getNombre());
-			usuarioConsulta.setApellido(usuario.getApellido());
-			usuarioConsulta.setEmail(usuario.getEmail());
-			usuarioConsulta.setContrasena(usuario.getContrasena());
-			usuarioConsulta.setCreateAt(usuario.getCreateAt());
-			usuarioConsulta.setEstado(usuario.getEstado());
+			usuarioActual.setTipoIdentificacion(usuario.getTipoIdentificacion());
+			usuarioActual.setIdentificacion(usuario.getIdentificacion());
+			usuarioActual.setNombre(usuario.getNombre());
+			usuarioActual.setApellido(usuario.getApellido());
+			usuarioActual.setEmail(usuario.getEmail());
+			usuarioActual.setContrasena(usuario.getContrasena());
+			usuarioActual.setCreateAt(usuario.getCreateAt());
+			usuarioActual.setEstado(usuario.getEstado());
 			
-			usuarioActulizado = usuarioService.save(usuarioConsulta);
+			usuarioActulizado = usuarioService.save(usuarioActual);
 					
 		}catch(DataAccessException e) {
 			response.put("mensaje", "No se pudo actualizar el usuario en la Base de Datos");
@@ -128,7 +153,7 @@ public class UsuarioRestController {
 		//---
 
 		
-		response.put("mensaje", "El Usuario ha sido actualizado con éxito!");
+		response.put("mensaje", "El usuario ha sido actualizado con éxito!");
 		response.put("usuario", usuarioActulizado);
 		
 		return new ResponseEntity< Map<String, Object> >(response, HttpStatus.CREATED);	
@@ -192,7 +217,7 @@ public class UsuarioRestController {
 		//---
 		
 		if (usuario == null) {
-			response.put("mensaje", "Error: El cliente con la Identificación: ".concat(identificacion.toString()).concat(" NO existe en la Base de Datos"));
+			response.put("mensaje", "Error: El usuario con la Identificación: ".concat(identificacion.toString()).concat(" NO existe en la Base de Datos"));
 			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.NOT_FOUND);
 		}
 		

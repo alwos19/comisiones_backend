@@ -13,6 +13,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -21,29 +24,39 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Table(name = "facultades")
 public class Facultad implements Serializable {
 
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NotBlank(message = "no debe estar en blanco")
+	@Size(max=50, message = "el tamaño debe estar entre 1 y 50 caracteres")
+	@Column(nullable=false)
 	private String nombre;
+	
+	@NotNull(message = "no debe ser nulo")
+	@Column(name = "centro_de_costo", nullable=false)
+	private Integer centroDeCosto;
+	
+	@Size(max=255, message = "el tamaño debe ser de máximo 255 caracteres")
 	private String descripcion;
 
-	@Column(name = "centro_de_costo")
-	private Integer centroDeCosto;
-
+	
+    //Foreign Keys
+	
 	@JsonIgnoreProperties({"facultad", "hibernateLazyInitializer", "handler"})
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "facultad", cascade = CascadeType.ALL)
 	private List<Departamento> departamento;
 
 	
-	//
+	//Constructor
 
 	@JsonCreator
 	public Facultad() {
 		this.departamento = new ArrayList<Departamento>();
 	}
 
-	//
+	//Getters and Setters
 
 	public Long getId() {
 		return id;
