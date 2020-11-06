@@ -11,5 +11,7 @@ public interface IUsuarioDao extends CrudRepository<Usuario, Long>{
 	public Usuario findByIdentificacion(Integer identificacion);
 	
 	public List<Usuario> findByApellidoIgnoreCase(String apellido);
+	
+	public Usuario findByEmail(String email);
 
 }
