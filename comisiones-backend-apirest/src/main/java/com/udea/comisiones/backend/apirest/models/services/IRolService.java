@@ -12,6 +12,6 @@ public interface IRolService {
 	
 	public Rol save(Rol rol);
 	
-	public List<Rol> findByNombreIgnoreCase(String nombre);
+	public Rol findByNombreIgnoreCase(String nombre);
 
 }

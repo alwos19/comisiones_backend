@@ -36,9 +36,10 @@ public class EstadoServiceImpl implements IEstadoService{
 	}
 
 	@Override
-	@Transactional(readOnly = true)
-	public List<Estado> findByNombreIgnoreCase(String nombre) {
+	public Estado findByNombreIgnoreCase(String nombre) {
 		return estadoDao.findByNombreIgnoreCase(nombre);
 	}
+
+
 
 }

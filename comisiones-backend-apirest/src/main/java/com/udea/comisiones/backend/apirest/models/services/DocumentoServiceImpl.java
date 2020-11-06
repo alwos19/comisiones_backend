@@ -45,6 +45,7 @@ public class DocumentoServiceImpl implements IDocumentoService{
 
 	@Override
 	public List<Documento> findByNombreIgnoreCase(String nombre) {
-		return documentoDao.findByNombreIgnoreCase(nombre);
+		return documentoDao.findByNombreStartingWithIgnoreCase(nombre);
 	}
+
 }

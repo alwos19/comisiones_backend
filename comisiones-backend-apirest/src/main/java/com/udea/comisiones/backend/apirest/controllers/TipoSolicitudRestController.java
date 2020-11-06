@@ -173,8 +173,27 @@ public class TipoSolicitudRestController {
 	//FILTRA POR NOMBRE
 	@GetMapping("/tipos-solicitud/filtrar-tipos-solicitud/{nombre}")
 	@ResponseStatus(HttpStatus.OK)
-	public List<TipoSolicitud> filtrarProductos(@PathVariable String nombre) {
-		return tipoSolicitudService.findByNombreIgnoreCase(nombre);
+	public ResponseEntity<?> filtrarProductos(@PathVariable String nombre) {
+		
+		TipoSolicitud tipoSolicitud =  null; 
+		Map<String, Object> response = new HashMap<>();
+		
+		//---
+		try {
+			tipoSolicitud = tipoSolicitudService.findByNombreIgnoreCase(nombre);
+		} catch(DataAccessException e) {
+			response.put("mensaje", "No se pudo realizar la consulta a la Base de Datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.INTERNAL_SERVER_ERROR);    
+		}
+		//---
+		
+		if (tipoSolicitud == null) {
+			response.put("mensaje", "Error: El tipo de solicitud con nombre: ".concat(nombre.toString()).concat(" NO existe en la Base de Datos"));
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.NOT_FOUND);
+		}
+		
+		return new ResponseEntity<TipoSolicitud>(tipoSolicitud, HttpStatus.OK);
 	} 
 
 }

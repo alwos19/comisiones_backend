@@ -36,7 +36,8 @@ public class DepartamentoServiceImpl implements IDepartamentoService{
 	}
 
 	@Override
-	public List<Departamento> findByNombreIgnoreCase(String nombre) {
+	public Departamento findByNombreIgnoreCase(String nombre) {
 		return departamentoDao.findByNombreIgnoreCase(nombre);
 	}
+
 }

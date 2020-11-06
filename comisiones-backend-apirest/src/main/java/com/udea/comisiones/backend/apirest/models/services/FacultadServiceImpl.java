@@ -36,9 +36,10 @@ public class FacultadServiceImpl implements IFacultadService{
 	}
 
 	@Override
-	@Transactional(readOnly = true)
-	public List<Facultad> findByNombreIgnoreCase(String nombre) {
+	public Facultad findByNombreIgnoreCase(String nombre) {
 		return facultadDao.findByNombreIgnoreCase(nombre);
 	}
+
+
 
 }

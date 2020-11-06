@@ -149,8 +149,27 @@ public class EstadoRestController  {
 	//FILTRA POR NOMBRE
 	@GetMapping("/estados/filtrar-estados/{nombre}")
 	@ResponseStatus(HttpStatus.OK)
-	public List<Estado> filtrarEstados(@PathVariable String nombre) {
-		return  estadoService.findByNombreIgnoreCase(nombre);
+	public ResponseEntity<?> filtrarEstados(@PathVariable String nombre) {
+		
+		Estado estado =  null; 
+		Map<String, Object> response = new HashMap<>();
+		
+		//---
+		try {
+			estado = estadoService.findByNombreIgnoreCase(nombre);
+		} catch(DataAccessException e) {
+			response.put("mensaje", "No se pudo realizar la consulta a la Base de Datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.INTERNAL_SERVER_ERROR);    
+		}
+		//---
+		
+		if (estado == null) {
+			response.put("mensaje", "Error: El estado con el nombre: ".concat(nombre.toString()).concat(" NO existe en la Base de Datos"));
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.NOT_FOUND);
+		}
+		
+		return new ResponseEntity<Estado>(estado, HttpStatus.OK);
 	}
 	
 	

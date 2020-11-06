@@ -17,12 +17,14 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.udea.comisiones.backend.apirest.models.entity.ComisionEstado;
+import com.udea.comisiones.backend.apirest.models.entity.Usuario;
 import com.udea.comisiones.backend.apirest.models.services.IComisionEstadoService;
 
 @CrossOrigin (origins= {"http://localhost:4200"})
@@ -66,6 +68,7 @@ public class ComisionEstadoRestController {
 	}
 	
 	
+	
 	//CREA 
 	@PostMapping("/comisiones-estados")
 	@ResponseStatus(HttpStatus.CREATED)
@@ -100,6 +103,53 @@ public class ComisionEstadoRestController {
 		
 		return new ResponseEntity< Map<String, Object> >(response, HttpStatus.CREATED);
 	}
+	
+	
+	/*//ACTUALIZA
+	@PutMapping("/comisiones-estados/{id}")
+	@ResponseStatus(HttpStatus.CREATED)
+	public ResponseEntity<?> update(@Valid @RequestBody ComisionEstado comisionEstado, BindingResult result, @PathVariable Long id) {
+		
+		ComisionEstado comisionEstadoActual = comisionEstadoService.findById(id);  
+		Map<String, Object> response = new HashMap<>();
+		Usuario usuarioActulizado = null;
+		
+		if(result.hasErrors()){
+			
+			List<String> errors = result.getFieldErrors()
+					.stream()  
+					.map(err -> "El campo '" + err.getField() + "' " + err.getDefaultMessage()) 
+					.collect(Collectors.toList()); 
+			
+			response.put("error", errors);
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.BAD_REQUEST);   
+		}
+		
+		if (comisionEstadoActual == null) {
+			response.put("mensaje", "Error: No se puede Editar. El usuario con el ID: ".concat(id.toString()).concat(" NO existe en la Base de Datos"));
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.NOT_FOUND);
+		}
+		
+		//---
+		try {
+			comisionEstadoActual.setComision(comisionEstado.);
+			
+			usuarioActulizado = usuarioService.save(usuarioActual);
+					
+		}catch(DataAccessException e) {
+			response.put("mensaje", "No se pudo actualizar el usuario en la Base de Datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.INTERNAL_SERVER_ERROR);   
+		}
+		//---
+
+		
+		response.put("mensaje", "El usuario ha sido actualizado con éxito!");
+		response.put("usuario", usuarioActulizado);
+		
+		return new ResponseEntity< Map<String, Object> >(response, HttpStatus.CREATED);	
+	}*/
+	
 	
 
 	//ELIMINA

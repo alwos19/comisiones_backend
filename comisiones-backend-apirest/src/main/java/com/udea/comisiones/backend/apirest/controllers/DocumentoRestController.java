@@ -1,5 +1,6 @@
 package com.udea.comisiones.backend.apirest.controllers;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -130,6 +131,7 @@ public class DocumentoRestController {
 			documentoActual.setNombre(documento.getNombre());
 			documentoActual.setEsCumplido(documento.getEsCumplido());
 			documentoActual.setEsAnexo(documento.getEsAnexo());
+			documentoActual.setComision(documento.getComision());
 			
 			documentoActulizado = documentoService.save(documentoActual);
 					
@@ -173,10 +175,29 @@ public class DocumentoRestController {
 	}
 	
 	//FILTRA POR NOMBRE
-	@GetMapping("/documentos/filtrar-documentos/{nombre}")
+	@GetMapping("/documentos/filtrar-nombre-documentos/{nombre}")
 	@ResponseStatus(HttpStatus.OK)
-	public List<Documento> filtrarDocumentos(@PathVariable String nombre) {
-		return documentoService.findByNombreIgnoreCase(nombre);
+	public ResponseEntity<?> filtrarDocumentos(@PathVariable String nombre) {
+		
+		List<Documento> documento =  new ArrayList<Documento>(); 
+		Map<String, Object> response = new HashMap<>();
+		
+		//---
+		try {
+			documento = documentoService.findByNombreIgnoreCase(nombre);
+		} catch(DataAccessException e) {
+			response.put("mensaje", "No se pudo realizar la consulta a la Base de Datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.INTERNAL_SERVER_ERROR);    
+		}
+		//---
+		
+		if (documento.size() == 0) {
+			response.put("mensaje", "Error: No hay documentos que contengan: ".concat(nombre.toString()).concat(" en la Base de Datos"));
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.NOT_FOUND);
+		}
+		
+		return new ResponseEntity<List<Documento> >(documento, HttpStatus.OK);
 	} 
 
 }

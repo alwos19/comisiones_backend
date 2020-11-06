@@ -1,5 +1,6 @@
 package com.udea.comisiones.backend.apirest.controllers;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -94,7 +95,7 @@ public class ComisionRestController {
 		}
 		//---
 		
-		response.put("mensaje", "La comisión ha sido creado con éxito!");
+		response.put("mensaje", "La comisión ha sido creada con éxito!");
 		response.put("comision", comisionNuevo);	
 		
 		return new ResponseEntity< Map<String, Object> >(response, HttpStatus.CREATED);
@@ -135,7 +136,6 @@ public class ComisionRestController {
 			comisionActual.setResolucion(comision.getResolucion());
 			comisionActual.setRespuestaDevolucion(comision.getRespuestaDevolucion());
 			comisionActual.setFechaResolucion(comision.getFechaResolucion());
-			comisionActual.setFechaActulizacion(comision.getFechaActulizacion());
 			
 			comisionActulizado = comisionService.save(comisionActual);
 					
@@ -147,7 +147,7 @@ public class ComisionRestController {
 		//---
 
 		
-		response.put("mensaje", "La comisión ha sido actualizado con éxito!");
+		response.put("mensaje", "La comisión ha sido actualizada con éxito!");
 		response.put("comision", comisionActulizado);
 		
 		return new ResponseEntity< Map<String, Object> >(response, HttpStatus.CREATED);	
@@ -172,7 +172,7 @@ public class ComisionRestController {
 		}
 		//---
 		
-		response.put("mensaje", "La comisión ha sido eliminado con éxito!");
+		response.put("mensaje", "La comisión ha sido eliminada con éxito!");
 		
 		return new ResponseEntity< Map<String, Object> >(response, HttpStatus.OK);
 	}
@@ -180,8 +180,29 @@ public class ComisionRestController {
 
 	@GetMapping("/comisiones/filtrar-lugar-comisiones/{lugar}")
 	@ResponseStatus(HttpStatus.OK)
-	public List<Comision> filtrarComisiones(@PathVariable String lugar) {
-		return comisionService.findByLugarContainingIgnoreCase(lugar);	} 
+	public ResponseEntity<?> filtrarComisiones(@PathVariable String lugar) {
+		
+		List<Comision> comision =  new ArrayList<Comision>(); 
+		Map<String, Object> response = new HashMap<>();
+		
+		//---
+		try {
+			comision = comisionService.findByLugarContainingIgnoreCase(lugar);
+		} catch(DataAccessException e) {
+			response.put("mensaje", "No se pudo realizar la consulta a la Base de Datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.INTERNAL_SERVER_ERROR);    
+		}
+		//---
+		
+		if (comision.size() == 0) {
+			response.put("mensaje", "Error: No existen Comisiones con lugar : ".concat(lugar.toString()).concat(" en la Base de Datos"));
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.NOT_FOUND);
+		}
+		
+		return new ResponseEntity<List<Comision>>(comision, HttpStatus.OK);
+		
+	} 
 	
 	
 }

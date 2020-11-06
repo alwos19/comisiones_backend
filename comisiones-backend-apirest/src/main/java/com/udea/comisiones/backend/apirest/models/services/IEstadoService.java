@@ -12,6 +12,6 @@ public interface IEstadoService {
 	
 	public Estado save(Estado estado);
 	
-	public List<Estado> findByNombreIgnoreCase(String nombre);
+	public Estado findByNombreIgnoreCase(String nombre);
 
 }

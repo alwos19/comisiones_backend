@@ -37,9 +37,9 @@ public class RolServiceImpl implements IRolService{
 	}
 
 	@Override
-	@Transactional(readOnly = true)
-	public List<Rol> findByNombreIgnoreCase(String nombre) {
+	public Rol findByNombreIgnoreCase(String nombre) {
 		return rolDao.findByNombreIgnoreCase(nombre);
 	}
+
 
 }

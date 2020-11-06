@@ -1,5 +1,6 @@
-package com.udea.comisiones.backend.apirest.controllers;
+ package com.udea.comisiones.backend.apirest.controllers;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -186,29 +187,45 @@ public class UsuarioRestController {
 		
 	}
 	
+	//FILTRA UN USUARIO POR IDENTIFICACION
+		@GetMapping("/usuarios/filtrar-identificacion-usuarios/{identificacion}")
+		@ResponseStatus(HttpStatus.OK)
+		public ResponseEntity<?> filtrarUsuariosByIdentificacion(@PathVariable Integer identificacion) {
+			
+			Usuario usuario =  null; 
+			Map<String, Object> response = new HashMap<>();
+			
+			//---
+			try {
+				usuario = usuarioService.findByIdentificacion(identificacion);
+			} catch(DataAccessException e) {
+				response.put("mensaje", "No se pudo realizar la consulta a la Base de Datos");
+				response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+				return new ResponseEntity< Map<String, Object> >(response, HttpStatus.INTERNAL_SERVER_ERROR);    
+			}
+			//---
+			
+			if (usuario == null) {
+				response.put("mensaje", "Error: El usuario con la Identificación: ".concat(identificacion.toString()).concat(" NO existe en la Base de Datos"));
+				return new ResponseEntity< Map<String, Object> >(response, HttpStatus.NOT_FOUND);
+			}
+			
+			return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
+		}
 	
 	
 	
 	//FILTRA USUARIOS POR APELLIDO
-	@GetMapping("/usuarios/filtrar-nombre-usuarios/{apellido}")
+	@GetMapping("/usuarios/filtrar-apellido-usuarios/{apellido}")
 	@ResponseStatus(HttpStatus.OK)
-	public List<Usuario> filtrarUsuariosByNombre(@PathVariable String apellido) {
-		return usuarioService.findByApellidoIgnoreCase(apellido);
-	}
-	
-	
-	
-	//FILTRA UN USUARIO POR IDENTIFICACION
-	@GetMapping("/usuarios/filtrar-identificacion-usuarios/{identificacion}")
-	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<?> filtrarUsuariosByIdentificacion(@PathVariable Integer identificacion) {
+	public ResponseEntity<?> filtrarUsuariosByNombre(@PathVariable String apellido) {
 		
-		Usuario usuario =  null; 
+		List<Usuario> usuario =  new ArrayList<Usuario>();
 		Map<String, Object> response = new HashMap<>();
 		
 		//---
 		try {
-			usuario = usuarioService.findByIdentificacion(identificacion);
+			usuario = usuarioService.findByApellidoIgnoreCase(apellido);
 		} catch(DataAccessException e) {
 			response.put("mensaje", "No se pudo realizar la consulta a la Base de Datos");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
@@ -216,13 +233,12 @@ public class UsuarioRestController {
 		}
 		//---
 		
-		if (usuario == null) {
-			response.put("mensaje", "Error: El usuario con la Identificación: ".concat(identificacion.toString()).concat(" NO existe en la Base de Datos"));
+		if (usuario.size() == 0) {
+			response.put("mensaje", "Error: Usuarios con el apellido: ".concat(apellido.toString()).concat(" NO existen en la Base de Datos"));
 			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.NOT_FOUND);
 		}
 		
-		return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
+		return new ResponseEntity< List<Usuario> >(usuario, HttpStatus.OK);
 	}
 	
-
 }

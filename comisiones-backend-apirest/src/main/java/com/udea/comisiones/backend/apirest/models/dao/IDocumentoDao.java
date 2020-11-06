@@ -8,5 +8,5 @@ import com.udea.comisiones.backend.apirest.models.entity.Documento;
 
 public interface IDocumentoDao extends CrudRepository<Documento, Long>{
 
-	public List<Documento> findByNombreIgnoreCase(String nombre);
+	public List<Documento> findByNombreStartingWithIgnoreCase(String nombre);
 }

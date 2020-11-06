@@ -14,6 +14,6 @@ public interface ITipoSolicitudService {
 	
 	public void delete(Long id);
 	
-	public List<TipoSolicitud> findByNombreIgnoreCase(String nombre);
+	public TipoSolicitud findByNombreIgnoreCase(String nombre);
 
 }

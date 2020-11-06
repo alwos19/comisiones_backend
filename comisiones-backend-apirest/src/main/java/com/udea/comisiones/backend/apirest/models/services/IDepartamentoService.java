@@ -12,5 +12,5 @@ public List<Departamento> findAll();
 	
 	public Departamento save(Departamento departamento);
 
-	public List<Departamento> findByNombreIgnoreCase(String nombre);
+	public Departamento findByNombreIgnoreCase(String nombre);
 }

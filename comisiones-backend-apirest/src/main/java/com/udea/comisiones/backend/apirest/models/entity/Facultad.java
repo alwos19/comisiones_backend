@@ -31,7 +31,7 @@ public class Facultad implements Serializable {
 
 	@NotBlank(message = "no debe estar en blanco")
 	@Size(max=50, message = "el tamaño debe estar entre 1 y 50 caracteres")
-	@Column(nullable=false)
+	@Column(nullable=false, unique = true)
 	private String nombre;
 	
 	@NotNull(message = "no debe ser nulo")

@@ -42,17 +42,17 @@ public class UsuarioServiceImpl implements IUsuarioService{
 		usuarioDao.deleteById(id);
 		
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Usuario findByIdentificacion(Integer identificacion) {
+		return usuarioDao.findByIdentificacion(identificacion);
+	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public List<Usuario> findByApellidoIgnoreCase(String apellido) {
 		return usuarioDao.findByApellidoIgnoreCase(apellido);
-	}
-
-	@Override
-	@Transactional(readOnly = true)
-	public Usuario findByIdentificacion(Integer identificacion) {
-		return usuarioDao.findByIdentificacion(identificacion);
 	}
 
 }
