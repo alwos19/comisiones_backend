@@ -8,8 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.udea.comisiones.backend.apirest.models.dao.IComisionEstadoDao;
 import com.udea.comisiones.backend.apirest.models.entity.ComisionEstado;
+
 @Service
-public class ComisionEstadoServiceImpl implements IComisionEstadoService{
+public class ComisionHasEstadoServiceImpl implements IComisionEstadoService{
 
 	@Autowired
 	private IComisionEstadoDao comisionEstadoDao;

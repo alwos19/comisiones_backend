@@ -147,7 +147,7 @@ public class RolRestController {
 	}
 	
 	//FILTRA POR NOMBRE
-	@GetMapping("/roles/filtrar-roles/{nombre}")
+	@GetMapping("/roles/filtrar-nombre-roles/{nombre}")
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<?> filtrarRoles(@PathVariable String nombre) {
 		

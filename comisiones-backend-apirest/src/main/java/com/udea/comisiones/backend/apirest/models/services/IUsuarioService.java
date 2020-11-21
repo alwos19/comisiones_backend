@@ -18,5 +18,7 @@ public interface IUsuarioService {
 	
 	public List<Usuario> findByApellidoIgnoreCase(String apellido);
 	
+	public Usuario findByUsername(String username);
+	
 
 }

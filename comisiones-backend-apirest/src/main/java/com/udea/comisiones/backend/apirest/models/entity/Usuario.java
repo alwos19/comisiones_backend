@@ -60,18 +60,24 @@ public class Usuario implements Serializable {
 	@Column(unique = true, nullable=false)
 	private String email;
 	
-	@NotEmpty(message = "no debe estar vacio")  //puede estar en blanco
+	@NotEmpty(message = "no debe estar vacio")  //si puede estar en blanco
 	@Size(max=100)
 	@Column(nullable = false)
 	private String contrasena;
 	
 	@NotNull(message = "no debe estar vacio")
 	@Column(nullable = false)
-	private Integer estado;
+	private Boolean activo;
 
 	@Column(name = "create_at", nullable = false)
 	@Temporal(TemporalType.DATE)
 	private Date createAt;
+	
+	//ejemplo o posible cambio:
+	
+	private String username;
+	private String password;
+	private Boolean enabled;
 	
 	//Foreign Keys
 
@@ -195,16 +201,45 @@ public class Usuario implements Serializable {
 		this.contrasena = contrasena;
 	}
 
-	public Integer getEstado() {
-		return estado;
+	public Boolean getActivo() {
+		return activo;
 	}
 
-	public void setEstado(Integer estado) {
-		this.estado = estado;
+	public void setActivo(Boolean activo) {
+		this.activo = activo;
 	}
 
+	//
+	
 
 
 	private static final long serialVersionUID = 1L;
+	
+	//
+
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
 
 }

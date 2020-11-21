@@ -13,5 +13,7 @@ public interface IUsuarioDao extends CrudRepository<Usuario, Long>{
 	public List<Usuario> findByApellidoIgnoreCase(String apellido);
 	
 	public Usuario findByEmail(String email);
+	
+	public Usuario findByUsername(String username);
 
 }
