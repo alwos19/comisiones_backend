@@ -60,7 +60,7 @@ public class Usuario implements Serializable {
 	@Column(unique = true, nullable=false)
 	private String email;
 	
-	@NotEmpty(message = "no debe estar vacio")  //si puede estar en blanco
+	@NotEmpty(message = "no debe estar vacio")  //sí puede estar en blanco
 	@Size(max=100)
 	@Column(nullable = false)
 	private String contrasena;

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,6 +45,7 @@ public class UsuarioRestController {
 	
 	
 	//CONSULTA UN USUARIO POR ID
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
 	@GetMapping("/usuarios/{id}")
 	public ResponseEntity<?> show(@PathVariable Long id) {
 		
@@ -71,6 +73,7 @@ public class UsuarioRestController {
 	
 	
 	//CREA UN USUARIO
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
 	@PostMapping("/usuarios")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> create(@Valid @RequestBody Usuario usuario, BindingResult result) {
@@ -108,6 +111,7 @@ public class UsuarioRestController {
 	
 	
 	//ACTUALIZA UN USUARIO
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
 	@PutMapping("/usuarios/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> update(@Valid @RequestBody Usuario usuario, BindingResult result, @PathVariable Long id) {
@@ -165,6 +169,7 @@ public class UsuarioRestController {
 	
 	
 	//ELIMINA UN USUARIO
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
 	@DeleteMapping("/usuarios/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<?> delete(@PathVariable Long id) {
@@ -190,34 +195,36 @@ public class UsuarioRestController {
 	}
 	
 	//FILTRA UN USUARIO POR IDENTIFICACION
-		@GetMapping("/usuarios/filtrar-identificacion-usuarios/{identificacion}")
-		@ResponseStatus(HttpStatus.OK)
-		public ResponseEntity<?> filtrarUsuariosByIdentificacion(@PathVariable Integer identificacion) {
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
+	@GetMapping("/usuarios/filtrar-identificacion-usuarios/{identificacion}")
+	@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity<?> filtrarUsuariosByIdentificacion(@PathVariable Integer identificacion) {
 			
-			Usuario usuario =  null; 
-			Map<String, Object> response = new HashMap<>();
+		Usuario usuario =  null; 
+		Map<String, Object> response = new HashMap<>();
 			
-			//---
-			try {
-				usuario = usuarioService.findByIdentificacion(identificacion);
-			} catch(DataAccessException e) {
-				response.put("mensaje", "No se pudo realizar la consulta a la Base de Datos");
-				response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
-				return new ResponseEntity< Map<String, Object> >(response, HttpStatus.INTERNAL_SERVER_ERROR);    
-			}
-			//---
-			
-			if (usuario == null) {
-				response.put("mensaje", "Error: El usuario con la Identificación: ".concat(identificacion.toString()).concat(" NO existe en la Base de Datos"));
-				return new ResponseEntity< Map<String, Object> >(response, HttpStatus.NOT_FOUND);
-			}
-			
-			return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
+		//---
+		try {
+			usuario = usuarioService.findByIdentificacion(identificacion);
+		} catch(DataAccessException e) {
+			response.put("mensaje", "No se pudo realizar la consulta a la Base de Datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.INTERNAL_SERVER_ERROR);    
 		}
+		//---
+			
+		if (usuario == null) {
+			response.put("mensaje", "Error: El usuario con la Identificación: ".concat(identificacion.toString()).concat(" NO existe en la Base de Datos"));
+			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.NOT_FOUND);
+		}
+			
+		return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
+	}
 	
 	
 	
 	//FILTRA USUARIOS POR APELLIDO
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
 	@GetMapping("/usuarios/filtrar-apellido-usuarios/{apellido}")
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<?> filtrarUsuariosByNombre(@PathVariable String apellido) {

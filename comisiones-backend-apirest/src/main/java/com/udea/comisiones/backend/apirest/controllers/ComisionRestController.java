@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,12 +37,14 @@ public class ComisionRestController {
 	private IComisionService comisionService;
 	
 	//CONSULTA TODOS
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
 	@GetMapping("/comisiones")
 	public List<Comision> index(){
 		return comisionService.findAll();
 	}
 	
 	//CONSULTA POR ID
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
 	@GetMapping("/comisiones/{id}")
 	public ResponseEntity<?> show(@PathVariable Long id) {
 		
@@ -67,6 +70,7 @@ public class ComisionRestController {
 	}
 	
 	//CREA
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
 	@PostMapping("/comisiones")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?>  create(@Valid @RequestBody Comision comision, BindingResult result) {
@@ -102,6 +106,7 @@ public class ComisionRestController {
 	}
 	
 	//ACTUALIZA
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
 	@PutMapping("/comisiones/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?>  update(@Valid @RequestBody Comision comision, BindingResult result, @PathVariable Long id) {
@@ -154,6 +159,7 @@ public class ComisionRestController {
 	}
 	
 	//ELIMINA
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
 	@DeleteMapping("/comisiones/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<?>  delete(@PathVariable Long id) {
@@ -178,6 +184,8 @@ public class ComisionRestController {
 	}
 	
 
+	//FILTAR POR LUGAR
+	@Secured({"ADMIN", "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
 	@GetMapping("/comisiones/filtrar-lugar-comisiones/{lugar}")
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<?> filtrarComisiones(@PathVariable String lugar) {

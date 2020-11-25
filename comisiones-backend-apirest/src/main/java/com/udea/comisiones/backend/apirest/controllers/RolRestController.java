@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,12 +35,14 @@ public class RolRestController {
 	private IRolService rolService;
 	
 	//CONSULTA TODOS 
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
 	@GetMapping("/roles")
 	public List<Rol> index(){
 		return rolService.findAll();
 	}
 	
 	//CONSULTA POR ID
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
 	@GetMapping("/roles/{id}")
 	public ResponseEntity<?>  show(@PathVariable Long id) {
 		
@@ -66,6 +69,7 @@ public class RolRestController {
 	
 	
 	//CREA 
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
 	@PostMapping("/roles")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> create(@Valid @RequestBody Rol rol, BindingResult result) {
@@ -102,6 +106,7 @@ public class RolRestController {
 	}
 	
 	//ACTUALIZA
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
 	@PutMapping("/roles/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> update(@Valid @RequestBody Rol rol, BindingResult result, @PathVariable Long id) {
@@ -147,6 +152,7 @@ public class RolRestController {
 	}
 	
 	//FILTRA POR NOMBRE
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
 	@GetMapping("/roles/filtrar-nombre-roles/{nombre}")
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<?> filtrarRoles(@PathVariable String nombre) {

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,12 +35,14 @@ public class FacultadRestController {
 	private IFacultadService facultadService;
 	
 	//CONSULTA TODOS
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
 	@GetMapping("/facultades")
 	public List<Facultad> index(){
 		return facultadService.findAll();
 	}
 	
 	//CONSULTA POR ID
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
 	@GetMapping("/facultades/{id}")
 	public ResponseEntity<?> show(@PathVariable Long id) {
 		
@@ -65,6 +68,7 @@ public class FacultadRestController {
 	}
 	
 	//CREA
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
 	@PostMapping("/facultades")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> create(@Valid  @RequestBody Facultad facultad, BindingResult result) {
@@ -101,6 +105,7 @@ public class FacultadRestController {
 	
 	
 	//ACTUALIZA
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
 	@PutMapping("/facultades/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> update(@Valid  @RequestBody Facultad facultad, BindingResult result, @PathVariable Long id) {
@@ -149,6 +154,7 @@ public class FacultadRestController {
 	
 			
 	//FILTRA POR NOMBRE
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
 	@GetMapping("/facultades/filtrar-facultades/{nombre}")
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<?> filtrarFacultades(@PathVariable String nombre) {

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,12 +36,14 @@ public class CumplidoRestController {
 	private ICumplidoService cumplidoService;
 	
 	//CONSULTA TODOS
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
 	@GetMapping("/cumplidos")
 	public List<Cumplido> index(){
 		return cumplidoService.findAll();
 	}
 	
 	//CONSULTA POR ID
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
 	@GetMapping("/cumplidos/{id}")
 	public ResponseEntity<?> show(@PathVariable Long id) {
 		
@@ -66,6 +69,7 @@ public class CumplidoRestController {
 	}
 	
 	//CREA
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
 	@PostMapping("/cumplidos")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> create(@Valid @RequestBody Cumplido cumplido, BindingResult result) {
@@ -101,6 +105,7 @@ public class CumplidoRestController {
 	}
 	
 	//ACTUALIZA
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
 	@PutMapping("/cumplidos/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> update(@Valid @RequestBody Cumplido cumplido, @PathVariable Long id, BindingResult result) {
@@ -150,6 +155,7 @@ public class CumplidoRestController {
 	}
 	
 	//ELIMINA
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
 	@DeleteMapping("/cumplidos/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<?> delete(@PathVariable Long id) {

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,12 +35,14 @@ public class ComisionEstadoRestController {
 	private IComisionEstadoService comisionEstadoService;
 	
 	///CONSULTA TODOS
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
 	@GetMapping("/comisiones-estados")
 	public List<ComisionEstado>  index(){
 		return comisionEstadoService.findAll();
 	}
 	
 	//CONSULTA POR ID
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
 	@GetMapping("/comisiones-estados/{id}")
 	public ResponseEntity<?> show(@PathVariable Long id) {
 		
@@ -68,6 +71,7 @@ public class ComisionEstadoRestController {
 	
 	
 	//CREA 
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
 	@PostMapping("/comisiones-estados")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> create(@Valid @RequestBody ComisionEstado comisionEstado, BindingResult result) {
@@ -151,6 +155,7 @@ public class ComisionEstadoRestController {
 	
 
 	//ELIMINA
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
 	@DeleteMapping("/comisiones-estados/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<?> delete(@PathVariable Long id) {

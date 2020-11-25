@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,12 +37,14 @@ public class DocumentoRestController {
 	private IDocumentoService documentoService;
 	
 	///CONSULTA TODOS
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
 	@GetMapping("/documentos")
 	public List<Documento> index(){
 		return documentoService.findAll();
 	}
 	
 	//CONSULTA POR ID
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
 	@GetMapping("/documentos/{id}")
 	public ResponseEntity<?> show(@PathVariable Long id) {
 		
@@ -67,6 +70,7 @@ public class DocumentoRestController {
 	}
 	
 	//CREA
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
 	@PostMapping("/documentos")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> create(@Valid @RequestBody Documento documento, BindingResult result) {
@@ -102,6 +106,7 @@ public class DocumentoRestController {
 	}
 	
 	//ACTUALIZA
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
 	@PutMapping("/documentos/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> update(@Valid @RequestBody Documento documento, BindingResult result, @PathVariable Long id) {
@@ -150,6 +155,7 @@ public class DocumentoRestController {
 	}
 	
 	//ELIMINA
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
 	@DeleteMapping("/documentos/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<?> delete(@PathVariable Long id) {
@@ -175,6 +181,7 @@ public class DocumentoRestController {
 	}
 	
 	//FILTRA POR NOMBRE
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
 	@GetMapping("/documentos/filtrar-nombre-documentos/{nombre}")
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<?> filtrarDocumentos(@PathVariable String nombre) {
