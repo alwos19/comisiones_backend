@@ -3,6 +3,8 @@ package com.udea.comisiones.backend.apirest.models.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,12 @@ public class FacultadServiceImpl implements IFacultadService{
 	public List<Facultad> findAll() {
 		return (List<Facultad>) facultadDao.findAll();
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Page<Facultad> findAll(Pageable pageable) {
+		return facultadDao.findAll(pageable);
+	}
 
 	@Override
 	@Transactional(readOnly = true)
@@ -39,6 +47,8 @@ public class FacultadServiceImpl implements IFacultadService{
 	public Facultad findByNombreIgnoreCase(String nombre) {
 		return facultadDao.findByNombreIgnoreCase(nombre);
 	}
+
+
 
 
 

@@ -9,6 +9,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -39,6 +41,13 @@ public class EstadoRestController  {
 	@GetMapping("/estados")
 	public List<Estado> index(){
 		return estadoService.findAll();
+	}
+	
+	//CONSULTA TODOS
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
+	@GetMapping("/estados/page/{page}")
+	public Page<Estado> index(@PathVariable Integer page){
+		return estadoService.findAll(PageRequest.of(page, 10));
 	}
 	
 	//CONSULTA POR ID

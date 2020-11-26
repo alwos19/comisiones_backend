@@ -3,6 +3,8 @@ package com.udea.comisiones.backend.apirest.models.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,12 @@ public class EstadoServiceImpl implements IEstadoService{
 
 	@Override
 	@Transactional(readOnly = true)
+	public Page<Estado> findAll(Pageable pageable) {
+		return estadoDao.findAll(pageable);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
 	public Estado findById(Long id) {
 		return estadoDao.findById(id).orElse(null);
 	}
@@ -39,6 +47,7 @@ public class EstadoServiceImpl implements IEstadoService{
 	public Estado findByNombreIgnoreCase(String nombre) {
 		return estadoDao.findByNombreIgnoreCase(nombre);
 	}
+
 
 
 

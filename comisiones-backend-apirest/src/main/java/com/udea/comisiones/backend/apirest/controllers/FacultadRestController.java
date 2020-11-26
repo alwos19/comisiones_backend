@@ -9,6 +9,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -39,6 +41,13 @@ public class FacultadRestController {
 	@GetMapping("/facultades")
 	public List<Facultad> index(){
 		return facultadService.findAll();
+	}
+	
+	//CONSULTA TODOS
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
+	@GetMapping("/facultades/page/{page}")
+	public Page<Facultad> index(@PathVariable Integer page){
+		return facultadService.findAll(PageRequest.of(page, 10));
 	}
 	
 	//CONSULTA POR ID

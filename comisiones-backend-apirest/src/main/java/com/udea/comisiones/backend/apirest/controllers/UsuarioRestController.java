@@ -10,10 +10,13 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,10 +27,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.udea.comisiones.backend.apirest.models.entity.TipoSolicitud;
 import com.udea.comisiones.backend.apirest.models.entity.Usuario;
 import com.udea.comisiones.backend.apirest.models.services.IUsuarioService;
 
-//@CrossOrigin (origins= {"http://localhost:4200"})
+@CrossOrigin (origins= {"http://localhost:4200"})
 @RestController
 @RequestMapping("/api")
 public class UsuarioRestController {
@@ -42,6 +46,12 @@ public class UsuarioRestController {
 		return usuarioService.findAll();
 	}
 	
+	
+	//CONSULTA 
+	@GetMapping("/usuarios/page/{page}")
+	public Page<Usuario> index(@PathVariable Integer page){
+		return usuarioService.findAll(PageRequest.of(page, 2));
+	}
 	
 	
 	//CONSULTA UN USUARIO POR ID

@@ -3,6 +3,8 @@ package com.udea.comisiones.backend.apirest.models.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +26,13 @@ public class ComisionServiceImpl implements IComisionService {
 	public List<Comision> findAll() {
 		
 		return (List<Comision>) comisionDao.findAll();
+	}
+	
+
+	@Override
+	@Transactional(readOnly = true)
+	public Page<Comision> findAll(Pageable pageable) {
+		return comisionDao.findAll(pageable);
 	}
 
 	@Override
@@ -50,6 +59,7 @@ public class ComisionServiceImpl implements IComisionService {
 	public List<Comision> findByLugarContainingIgnoreCase(String lugar) {
 		return comisionDao.findByLugarContainingIgnoreCase(lugar);
 	}
+
 
 
 }

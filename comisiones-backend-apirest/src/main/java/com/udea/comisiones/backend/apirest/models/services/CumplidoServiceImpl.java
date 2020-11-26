@@ -3,6 +3,8 @@ package com.udea.comisiones.backend.apirest.models.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,13 @@ public class CumplidoServiceImpl implements ICumplidoService{
 
 	@Override
 	@Transactional(readOnly = true)
+	public Page<Cumplido> findAll(Pageable pageable) {
+		return cumplidoDao.findAll(pageable);
+	}
+
+	
+	@Override
+	@Transactional(readOnly = true)
 	public Cumplido findById(Long id) {
 		return cumplidoDao.findById(id).orElse(null);
 	}
@@ -42,5 +51,6 @@ public class CumplidoServiceImpl implements ICumplidoService{
 		cumplidoDao.deleteById(id);
 		
 	}
+
 
 }

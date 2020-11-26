@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -52,6 +54,14 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
 		
 		return (List<Usuario>) usuarioDao.findAll();
 	}
+	
+
+	@Override
+	public Page<Usuario> findAll(Pageable pageable) {
+		return usuarioDao.findAll(pageable);
+	}
+
+
 
 	@Override
 	@Transactional(readOnly = true)
@@ -88,5 +98,7 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
 	public Usuario findByUsername(String username) {
 		return usuarioDao.findByUsername(username);
 	}
+
+
 
 }

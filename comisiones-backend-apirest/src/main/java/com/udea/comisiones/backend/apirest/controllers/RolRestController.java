@@ -9,6 +9,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -40,6 +42,15 @@ public class RolRestController {
 	public List<Rol> index(){
 		return rolService.findAll();
 	}
+	
+	
+	//CONSULTA TODOS 
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
+	@GetMapping("/roles/page/{page}")
+	public Page<Rol> index(@PathVariable Integer page){
+		return rolService.findAll(PageRequest.of(page, 10));
+	}	
+	
 	
 	//CONSULTA POR ID
 	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})

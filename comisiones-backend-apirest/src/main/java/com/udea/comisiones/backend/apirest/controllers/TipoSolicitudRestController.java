@@ -9,6 +9,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -41,6 +43,15 @@ public class TipoSolicitudRestController {
 	public List<TipoSolicitud> index(){
 		return tipoSolicitudService.findAll();
 	}
+
+	//CONSULTA LOS TIPOS DE SOLICITUD
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
+	@GetMapping("/tipos-solicitud/page/{page}")
+	public Page<TipoSolicitud> index(@PathVariable Integer page){
+		return tipoSolicitudService.findAll(PageRequest.of(page, 10));
+	}
+	
+
 	
 	//CONSULTA UN TIPO DE SOLICITUD POR ID
 	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})

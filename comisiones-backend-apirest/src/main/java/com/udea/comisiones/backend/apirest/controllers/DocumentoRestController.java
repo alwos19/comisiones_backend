@@ -10,6 +10,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -41,6 +43,13 @@ public class DocumentoRestController {
 	@GetMapping("/documentos")
 	public List<Documento> index(){
 		return documentoService.findAll();
+	}
+	
+	///CONSULTA TODOS
+	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
+	@GetMapping("/documentos/page/{page}")
+	public Page<Documento> index(@PathVariable Integer page){
+		return documentoService.findAll(PageRequest.of(page, 10));
 	}
 	
 	//CONSULTA POR ID

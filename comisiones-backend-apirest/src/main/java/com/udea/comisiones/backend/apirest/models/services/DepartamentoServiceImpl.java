@@ -3,6 +3,8 @@ package com.udea.comisiones.backend.apirest.models.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,12 @@ public class DepartamentoServiceImpl implements IDepartamentoService{
 	public List<Departamento> findAll() {
 		return (List<Departamento>) departamentoDao.findAll();
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Page<Departamento> findAll(Pageable pageable) {
+		return departamentoDao.findAll(pageable);
+	}
 
 	@Override
 	@Transactional(readOnly = true)
@@ -39,5 +47,6 @@ public class DepartamentoServiceImpl implements IDepartamentoService{
 	public Departamento findByNombreIgnoreCase(String nombre) {
 		return departamentoDao.findByNombreIgnoreCase(nombre);
 	}
+
 
 }

@@ -3,6 +3,8 @@ package com.udea.comisiones.backend.apirest.models.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +25,12 @@ public class RolServiceImpl implements IRolService{
 		
 		return (List<Rol>) rolDao.findAll();
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Page<Rol> findAll(Pageable pageable) {
+		return rolDao.findAll(pageable);
+	}
 
 	@Override
 	@Transactional(readOnly = true)
@@ -40,6 +48,7 @@ public class RolServiceImpl implements IRolService{
 	public Rol findByNombreIgnoreCase(String nombre) {
 		return rolDao.findByNombreIgnoreCase(nombre);
 	}
+
 
 
 }
