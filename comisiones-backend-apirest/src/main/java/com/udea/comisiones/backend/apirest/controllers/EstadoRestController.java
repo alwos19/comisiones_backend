@@ -37,21 +37,21 @@ public class EstadoRestController  {
 	private IEstadoService estadoService;
 	
 	//CONSULTA TODOS
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
+	@Secured({"ROLE_ADMIN", "ROLE_VICERRECTORIA", "ROLE_DECANO", "ROLE_DIRECTOR", "ROLE_SECRETARIA_DECANO", "ROLE_SECRETARIA_DIRECTOR",  "ROLE_USUARIO"})
 	@GetMapping("/estados")
 	public List<Estado> index(){
 		return estadoService.findAll();
 	}
 	
 	//CONSULTA TODOS
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
+	@Secured({"ROLE_ADMIN", "ROLE_VICERRECTORIA", "ROLE_DECANO", "ROLE_DIRECTOR", "ROLE_SECRETARIA_DECANO", "ROLE_SECRETARIA_DIRECTOR",  "ROLE_USUARIO"})
 	@GetMapping("/estados/page/{page}")
 	public Page<Estado> index(@PathVariable Integer page){
 		return estadoService.findAll(PageRequest.of(page, 10));
 	}
 	
 	//CONSULTA POR ID
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
+	@Secured({"ROLE_ADMIN", "ROLE_VICERRECTORIA", "ROLE_DECANO", "ROLE_DIRECTOR", "ROLE_SECRETARIA_DECANO", "ROLE_SECRETARIA_DIRECTOR",  "ROLE_USUARIO"})
 	@GetMapping("/estados/{id}")
 	public ResponseEntity<?> show(@PathVariable Long id) {
 		
@@ -77,7 +77,7 @@ public class EstadoRestController  {
 	}
 	
 	//CREA
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
+	@Secured({"ROLE_ADMIN"})
 	@PostMapping("/estados")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> create(@Valid @RequestBody Estado estado, BindingResult result) {
@@ -113,7 +113,7 @@ public class EstadoRestController  {
 	}
 	
 	//ACTUALIZA
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
+	@Secured({"ROLE_ADMIN"})
 	@PutMapping("/estados/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> update(@Valid @RequestBody Estado estado, BindingResult result, @PathVariable Long id) {
@@ -161,7 +161,7 @@ public class EstadoRestController  {
 	}
 	
 	//FILTRA POR NOMBRE
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
+	@Secured({"ROLE_ADMIN", "ROLE_VICERRECTORIA", "ROLE_DECANO", "ROLE_DIRECTOR", "ROLE_SECRETARIA_DECANO", "ROLE_SECRETARIA_DIRECTOR"})
 	@GetMapping("/estados/filtrar-estados/{nombre}")
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<?> filtrarEstados(@PathVariable String nombre) {

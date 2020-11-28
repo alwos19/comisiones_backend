@@ -27,7 +27,7 @@ public class Rol implements Serializable {
 	private Long id;
 	
 	@NotBlank(message = "no debe estar en blanco")
-	@Size(max=15, message = "el tamaño debe estar entre 1 y 15 caracteres")
+	@Size(max=30, message = "el tamaño debe estar entre 1 y 15 caracteres")
 	@Column(nullable=false, unique = true)
 	private String nombre;
 	

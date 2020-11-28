@@ -6,8 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.udea.comisiones.backend.apirest.auth.UserAuthenticationToken;
 import com.udea.comisiones.backend.apirest.models.dao.IUsuarioDao;
 import com.udea.comisiones.backend.apirest.models.entity.Usuario;
 
@@ -25,6 +29,7 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
 
 	@Autowired
 	private IUsuarioDao usuarioDao;
+	
 	
 	private Logger logger = LoggerFactory.getLogger(UsuarioServiceImpl.class);
 	
@@ -35,17 +40,26 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
 		Usuario usuario = usuarioDao.findByUsername(username);
-		List<GrantedAuthority> authorities =  new ArrayList<GrantedAuthority>();
+		List<GrantedAuthority> grantedAuthorities =  new ArrayList<GrantedAuthority>();
+		UserDetails userDetails = null;
 		
 		if (usuario == null){
 			logger.error("Error en el loggin: No existe el usuario '" + username + "' en el sistema!");
 			throw new UsernameNotFoundException("Error en el loggin: No existe el usuario '" + username + "' en el sistema!");
+		}else {
+            
+            grantedAuthorities.add( new SimpleGrantedAuthority( usuario.getRol().getNombre() ) );
+            
+            userDetails = new User(usuario.getUsername(), usuario.getPassword(), true, true, true, true, grantedAuthorities);
+           
+            Authentication authentication = new UserAuthenticationToken(usuario, userDetails, userDetails.getAuthorities());
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 		}
 		
-		authorities.add( new SimpleGrantedAuthority( usuario.getRol().getNombre() ) );
-		
+		return userDetails;
 		//username, enable, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities:
-		return new User(usuario.getUsername(), usuario.getPassword(), usuario.getEnabled(), true, true, true, authorities);
+		//return new User(usuario.getUsername(), usuario.getPassword(), usuario.getEnabled(), true, true, true, grantedAuthorities);
 	}
 	
 	@Override

@@ -1,5 +1,6 @@
  package com.udea.comisiones.backend.apirest.controllers;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +16,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PreFilter;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,12 +30,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.udea.comisiones.backend.apirest.models.entity.TipoSolicitud;
 import com.udea.comisiones.backend.apirest.models.entity.Usuario;
 import com.udea.comisiones.backend.apirest.models.services.IUsuarioService;
+import com.udea.comisiones.backend.apirest.models.services.UsuarioServiceImpl;
 
 @CrossOrigin (origins= {"http://localhost:4200"})
 @RestController
@@ -41,6 +48,7 @@ public class UsuarioRestController {
 	
 	
 	//CONSULTA LOS USUARIOS
+	@Secured({"ROLE_ADMIN",  "ROLE_VICERRECTORIA", "ROLE_DECANO", "ROLE_DIRECTOR", "ROLE_SECRETARIA_DECANO", "ROLE_SECRETARIA_DIRECTOR"})
 	@GetMapping("/usuarios")
 	public List<Usuario> index(){
 		return usuarioService.findAll();
@@ -48,6 +56,7 @@ public class UsuarioRestController {
 	
 	
 	//CONSULTA 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")   //FUNCIONA!!!
 	@GetMapping("/usuarios/page/{page}")
 	public Page<Usuario> index(@PathVariable Integer page){
 		return usuarioService.findAll(PageRequest.of(page, 2));
@@ -55,16 +64,18 @@ public class UsuarioRestController {
 	
 	
 	//CONSULTA UN USUARIO POR ID
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
+	//@Secured({"ROLE_ADMIN", "ROLE_VICERRECTORIA", "ROLE_DECANO", "ROLE_DIRECTOR", "ROLE_SECRETARIA_DECANO", "ROLE_SECRETARIA_DIRECTOR",  "ROLE_USUARIO"})
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN') or #user == #id")
 	@GetMapping("/usuarios/{id}")
-	public ResponseEntity<?> show(@PathVariable Long id) {
+	public ResponseEntity<?> show(@PathVariable("id") String username, @AuthenticationPrincipal UserDetails user){//, @AuthenticationPrincipal UserDetailsService authUser, Principal principal) {
 		
 		Usuario usuario =  null; 
 		Map<String, Object> response = new HashMap<>();
 		
 		//---
 		try {
-			usuario = usuarioService.findById(id);
+			usuario = usuarioService.findByUsername(username);
 		} catch(DataAccessException e) {
 			response.put("mensaje", "No se pudo realizar la consulta a la Base de Datos");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
@@ -73,7 +84,7 @@ public class UsuarioRestController {
 		//---
 		
 		if (usuario == null) {
-			response.put("mensaje", "Error: El usuario con el ID: ".concat(id.toString()).concat(" NO existe en la Base de Datos"));
+			response.put("mensaje", "Error: El usuario con el ID: ".concat(username.toString()).concat(" NO existe en la Base de Datos"));
 			return new ResponseEntity< Map<String, Object> >(response, HttpStatus.NOT_FOUND);
 		}
 		
@@ -83,7 +94,7 @@ public class UsuarioRestController {
 	
 	
 	//CREA UN USUARIO
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
+	@Secured({"ROLE_ADMIN", "ROLE_DECANO", "ROLE_SECRETARIA_DECANO"})
 	@PostMapping("/usuarios")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> create(@Valid @RequestBody Usuario usuario, BindingResult result) {
@@ -121,7 +132,7 @@ public class UsuarioRestController {
 	
 	
 	//ACTUALIZA UN USUARIO
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
+	@Secured({"ROLE_ADMIN", "ROLE_DECANO", "ROLE_SECRETARIA_DECANO"})
 	@PutMapping("/usuarios/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> update(@Valid @RequestBody Usuario usuario, BindingResult result, @PathVariable Long id) {
@@ -179,7 +190,7 @@ public class UsuarioRestController {
 	
 	
 	//ELIMINA UN USUARIO
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
+	@Secured({"ROLE_ADMIN", "ROLE_DECANO", "ROLE_SECRETARIA_DECANO"})
 	@DeleteMapping("/usuarios/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<?> delete(@PathVariable Long id) {
@@ -205,7 +216,7 @@ public class UsuarioRestController {
 	}
 	
 	//FILTRA UN USUARIO POR IDENTIFICACION
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
+	@Secured({"ROLE_ADMIN",  "ROLE_VICERRECTORIA", "ROLE_DECANO", "ROLE_DIRECTOR", "ROLE_SECRETARIA_DECANO", "ROLE_SECRETARIA_DIRECTOR"})
 	@GetMapping("/usuarios/filtrar-identificacion-usuarios/{identificacion}")
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<?> filtrarUsuariosByIdentificacion(@PathVariable Integer identificacion) {
@@ -234,7 +245,7 @@ public class UsuarioRestController {
 	
 	
 	//FILTRA USUARIOS POR APELLIDO
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
+	@Secured({"ROLE_ADMIN",  "ROLE_VICERRECTORIA", "ROLE_DECANO", "ROLE_DIRECTOR", "ROLE_SECRETARIA_DECANO", "ROLE_SECRETARIA_DIRECTOR"})
 	@GetMapping("/usuarios/filtrar-apellido-usuarios/{apellido}")
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<?> filtrarUsuariosByNombre(@PathVariable String apellido) {

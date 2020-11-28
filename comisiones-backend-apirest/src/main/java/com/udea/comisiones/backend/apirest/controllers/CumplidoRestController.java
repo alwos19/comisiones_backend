@@ -38,21 +38,21 @@ public class CumplidoRestController {
 	private ICumplidoService cumplidoService;
 	
 	//CONSULTA TODOS
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
+	@Secured({"ROLE_ADMIN", "ROLE_VICERRECTORIA", "ROLE_DECANO", "ROLE_DIRECTOR", "ROLE_SECRETARIA_DECANO", "ROLE_SECRETARIA_DIRECTOR",  "ROLE_USUARIO"})
 	@GetMapping("/cumplidos")
 	public List<Cumplido> index(){
 		return cumplidoService.findAll();
 	}
 	
 	//CONSULTA TODOS
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
+	@Secured({"ROLE_ADMIN", "ROLE_VICERRECTORIA", "ROLE_DECANO", "ROLE_DIRECTOR", "ROLE_SECRETARIA_DECANO", "ROLE_SECRETARIA_DIRECTOR",  "ROLE_USUARIO"})
 	@GetMapping("/cumplidos/page/{page}")
 	public Page<Cumplido> index(@PathVariable Integer page){
 		return cumplidoService.findAll(PageRequest.of(page, 10));
 	}
 	
 	//CONSULTA POR ID
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
+	@Secured({"ROLE_ADMIN", "ROLE_VICERRECTORIA", "ROLE_DECANO", "ROLE_DIRECTOR", "ROLE_SECRETARIA_DECANO", "ROLE_SECRETARIA_DIRECTOR",  "ROLE_USUARIO"})
 	@GetMapping("/cumplidos/{id}")
 	public ResponseEntity<?> show(@PathVariable Long id) {
 		
@@ -78,7 +78,7 @@ public class CumplidoRestController {
 	}
 	
 	//CREA
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
+	@Secured({"ROLE_ADMIN", "ROLE_USUARIO"})
 	@PostMapping("/cumplidos")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> create(@Valid @RequestBody Cumplido cumplido, BindingResult result) {
@@ -114,7 +114,7 @@ public class CumplidoRestController {
 	}
 	
 	//ACTUALIZA
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
+	@Secured({"ROLE_ADMIN", "ROLE_USUARIO"})
 	@PutMapping("/cumplidos/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> update(@Valid @RequestBody Cumplido cumplido, @PathVariable Long id, BindingResult result) {
@@ -164,7 +164,7 @@ public class CumplidoRestController {
 	}
 	
 	//ELIMINA
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
+	@Secured({"ROLE_ADMIN", "ROLE_USUARIO"})
 	@DeleteMapping("/cumplidos/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<?> delete(@PathVariable Long id) {

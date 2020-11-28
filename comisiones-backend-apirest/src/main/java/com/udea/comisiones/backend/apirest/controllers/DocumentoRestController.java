@@ -39,21 +39,21 @@ public class DocumentoRestController {
 	private IDocumentoService documentoService;
 	
 	///CONSULTA TODOS
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
+	@Secured({"ROLE_ADMIN", "ROLE_VICERRECTORIA", "ROLE_DECANO", "ROLE_DIRECTOR", "ROLE_SECRETARIA_DECANO", "ROLE_SECRETARIA_DIRECTOR",  "ROLE_USUARIO"})
 	@GetMapping("/documentos")
 	public List<Documento> index(){
 		return documentoService.findAll();
 	}
 	
 	///CONSULTA TODOS
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
+	@Secured({"ROLE_ADMIN", "ROLE_VICERRECTORIA", "ROLE_DECANO", "ROLE_DIRECTOR", "ROLE_SECRETARIA_DECANO", "ROLE_SECRETARIA_DIRECTOR",  "ROLE_USUARIO"})
 	@GetMapping("/documentos/page/{page}")
 	public Page<Documento> index(@PathVariable Integer page){
 		return documentoService.findAll(PageRequest.of(page, 10));
 	}
 	
 	//CONSULTA POR ID
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
+	@Secured({"ROLE_ADMIN", "ROLE_VICERRECTORIA", "ROLE_DECANO", "ROLE_DIRECTOR", "ROLE_SECRETARIA_DECANO", "ROLE_SECRETARIA_DIRECTOR",  "ROLE_USUARIO"})
 	@GetMapping("/documentos/{id}")
 	public ResponseEntity<?> show(@PathVariable Long id) {
 		
@@ -79,7 +79,7 @@ public class DocumentoRestController {
 	}
 	
 	//CREA
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
+	@Secured({"ROLE_ADMIN", "ROLE_USUARIO"})
 	@PostMapping("/documentos")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> create(@Valid @RequestBody Documento documento, BindingResult result) {
@@ -115,7 +115,7 @@ public class DocumentoRestController {
 	}
 	
 	//ACTUALIZA
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
+	@Secured({"ROLE_ADMIN", "ROLE_USUARIO"})
 	@PutMapping("/documentos/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> update(@Valid @RequestBody Documento documento, BindingResult result, @PathVariable Long id) {
@@ -164,7 +164,7 @@ public class DocumentoRestController {
 	}
 	
 	//ELIMINA
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
+	@Secured({"ROLE_ADMIN", "ROLE_USUARIO"})
 	@DeleteMapping("/documentos/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<?> delete(@PathVariable Long id) {
@@ -190,7 +190,7 @@ public class DocumentoRestController {
 	}
 	
 	//FILTRA POR NOMBRE
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
+	@Secured({"ROLE_ADMIN", "ROLE_USUARIO"})
 	@GetMapping("/documentos/filtrar-nombre-documentos/{nombre}")
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<?> filtrarDocumentos(@PathVariable String nombre) {

@@ -37,21 +37,21 @@ public class FacultadRestController {
 	private IFacultadService facultadService;
 	
 	//CONSULTA TODOS
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
+	@Secured({"ROLE_ADMIN", "ROLE_VICERRECTORIA"})
 	@GetMapping("/facultades")
 	public List<Facultad> index(){
 		return facultadService.findAll();
 	}
 	
 	//CONSULTA TODOS
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
+	@Secured({"ROLE_ADMIN", "ROLE_VICERRECTORIA"})
 	@GetMapping("/facultades/page/{page}")
 	public Page<Facultad> index(@PathVariable Integer page){
 		return facultadService.findAll(PageRequest.of(page, 10));
 	}
 	
 	//CONSULTA POR ID
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
+	@Secured({"ROLE_ADMIN", "ROLE_VICERRECTORIA"})
 	@GetMapping("/facultades/{id}")
 	public ResponseEntity<?> show(@PathVariable Long id) {
 		
@@ -77,7 +77,7 @@ public class FacultadRestController {
 	}
 	
 	//CREA
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
+	@Secured({"ROLE_ADMIN"})
 	@PostMapping("/facultades")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> create(@Valid  @RequestBody Facultad facultad, BindingResult result) {
@@ -114,7 +114,7 @@ public class FacultadRestController {
 	
 	
 	//ACTUALIZA
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
+	@Secured({"ROLE_ADMIN"})
 	@PutMapping("/facultades/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> update(@Valid  @RequestBody Facultad facultad, BindingResult result, @PathVariable Long id) {
@@ -163,7 +163,7 @@ public class FacultadRestController {
 	
 			
 	//FILTRA POR NOMBRE
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
+	@Secured({"ROLE_ADMIN", "ROLE_VICERRECTORIA"})
 	@GetMapping("/facultades/filtrar-facultades/{nombre}")
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<?> filtrarFacultades(@PathVariable String nombre) {

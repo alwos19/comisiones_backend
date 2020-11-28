@@ -37,21 +37,21 @@ public class ComisionEstadoRestController {
 	private IComisionEstadoService comisionEstadoService;
 	
 	///CONSULTA TODOS
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
+	@Secured({"ROLE_ADMIN", "ROLE_VICERRECTORIA", "ROLE_DECANO", "ROLE_DIRECTOR", "ROLE_SECRETARIA_DECANO", "ROLE_SECRETARIA_DIRECTOR",  "ROLE_USUARIO"})
 	@GetMapping("/comisiones-estados")
 	public List<ComisionEstado>  index(){
 		return comisionEstadoService.findAll();
 	}
 	
 	///CONSULTA TODOS
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
+	@Secured({"ROLE_ADMIN", "ROLE_VICERRECTORIA", "ROLE_DECANO", "ROLE_DIRECTOR", "ROLE_SECRETARIA_DECANO", "ROLE_SECRETARIA_DIRECTOR",  "ROLE_USUARIO"})
 	@GetMapping("/comisiones-estados/page/{page}")
 	public Page<ComisionEstado> index(@PathVariable Integer page){
 		return comisionEstadoService.findAll(PageRequest.of(page, 10));
 	}
 	
 	//CONSULTA POR ID
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
+	@Secured({"ROLE_ADMIN", "ROLE_VICERRECTORIA", "ROLE_DECANO", "ROLE_DIRECTOR", "ROLE_SECRETARIA_DECANO", "ROLE_SECRETARIA_DIRECTOR",  "ROLE_USUARIO"})
 	@GetMapping("/comisiones-estados/{id}")
 	public ResponseEntity<?> show(@PathVariable Long id) {
 		
@@ -80,7 +80,7 @@ public class ComisionEstadoRestController {
 	
 	
 	//CREA 
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
+	@Secured({"ROLE_ADMIN", "ROLE_DECANO", "ROLE_DIRECTOR", "ROLE_SECRETARIA_DECANO", "ROLE_SECRETARIA_DIRECTOR"})
 	@PostMapping("/comisiones-estados")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> create(@Valid @RequestBody ComisionEstado comisionEstado, BindingResult result) {
@@ -117,6 +117,7 @@ public class ComisionEstadoRestController {
 	
 	
 	/*//ACTUALIZA
+	@Secured({"ROLE_ADMIN", "ROLE_DECANO", "ROLE_DIRECTOR", "ROLE_SECRETARIA_DECANO", "ROLE_SECRETARIA_DIRECTOR"})
 	@PutMapping("/comisiones-estados/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> update(@Valid @RequestBody ComisionEstado comisionEstado, BindingResult result, @PathVariable Long id) {
@@ -164,7 +165,7 @@ public class ComisionEstadoRestController {
 	
 
 	//ELIMINA
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
+	@Secured({"ROLE_ADMIN", "ROLE_DECANO", "ROLE_DIRECTOR", "ROLE_SECRETARIA_DECANO", "ROLE_SECRETARIA_DIRECTOR"})
 	@DeleteMapping("/comisiones-estados/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<?> delete(@PathVariable Long id) {

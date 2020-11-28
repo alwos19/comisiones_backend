@@ -6,8 +6,12 @@ INSERT INTO departamentos (nombre, facultad_id) VALUES ('Biologia', 1);
 INSERT INTO departamentos (nombre, facultad_id) VALUES ('Sistemas', 2);
 
 INSERT INTO roles (nombre) VALUES ('ROLE_ADMIN');
-INSERT INTO roles (nombre) VALUES ('ROLE_PROFESOR');
-INSERT INTO roles (nombre) VALUES ('ROLE_ESTUDIANTE');
+INSERT INTO roles (nombre) VALUES ('ROLE_VICERRECTORIA');
+INSERT INTO roles (nombre) VALUES ('ROLE_DECANO');
+INSERT INTO roles (nombre) VALUES ('ROLE_DIRECTOR');
+INSERT INTO roles (nombre) VALUES ('ROLE_SECRETARIA_DECANO');
+INSERT INTO roles (nombre) VALUES ('ROLE_SECRETARIA_DIRECTOR');
+INSERT INTO roles (nombre) VALUES ('ROLE_USUARIO');
 
 INSERT INTO tipos_solicitud (nombre) VALUES ('permiso');
 INSERT INTO tipos_solicitud (nombre) VALUES ('comision');

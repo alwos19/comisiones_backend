@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreFilter;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,14 +39,14 @@ public class TipoSolicitudRestController {
 	private ITipoSolicitudService tipoSolicitudService;
 	
 	//CONSULTA LOS TIPOS DE SOLICITUD
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
+	@Secured({"ROLE_ADMIN", "ROLE_VICERRECTORIA", "ROLE_DECANO", "ROLE_DIRECTOR", "ROLE_SECRETARIA_DECANO", "ROLE_SECRETARIA_DIRECTOR", "ROLE_USUARIO"})
 	@GetMapping("/tipos-solicitud")
 	public List<TipoSolicitud> index(){
 		return tipoSolicitudService.findAll();
 	}
 
 	//CONSULTA LOS TIPOS DE SOLICITUD
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
+	@Secured({"ROLE_ADMIN", "ROLE_VICERRECTORIA", "ROLE_DECANO", "ROLE_DIRECTOR", "ROLE_SECRETARIA_DECANO", "ROLE_SECRETARIA_DIRECTOR", "ROLE_USUARIO"})
 	@GetMapping("/tipos-solicitud/page/{page}")
 	public Page<TipoSolicitud> index(@PathVariable Integer page){
 		return tipoSolicitudService.findAll(PageRequest.of(page, 10));
@@ -54,7 +55,7 @@ public class TipoSolicitudRestController {
 
 	
 	//CONSULTA UN TIPO DE SOLICITUD POR ID
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
+	@Secured({"ROLE_ADMIN", "ROLE_VICERRECTORIA", "ROLE_DECANO", "ROLE_DIRECTOR", "ROLE_SECRETARIA_DECANO", "ROLE_SECRETARIA_DIRECTOR", "ROLE_USUARIO"})
 	@GetMapping("/tipos-solicitud/{id}")
 	public ResponseEntity<?>  show(@PathVariable Long id) {
 		
@@ -81,7 +82,7 @@ public class TipoSolicitudRestController {
 	}
 	
 	//CREA UN TIPO DE SOLICITUD
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
+	@Secured({"ROLE_ADMIN"})
 	@PostMapping("/tipos-solicitud")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> create(@Valid @RequestBody TipoSolicitud tipoSolicitud, BindingResult result) {
@@ -117,7 +118,7 @@ public class TipoSolicitudRestController {
 	}
 	
 	//ACTUALIZA UN TIPO DE SOLICITUD
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
+	@Secured({"ROLE_ADMIN"})
 	@PutMapping("/tipos-solicitud/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> update(@Valid  @RequestBody TipoSolicitud tipoSolicitud, BindingResult result, @PathVariable Long id) {
@@ -163,7 +164,7 @@ public class TipoSolicitudRestController {
 	}
 	
 	//ELIMINA UN TIPO DE SOLICITUD
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
+	@Secured({"ROLE_ADMIN"})
 	@DeleteMapping("/tipos-solicitud/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<?> delete(@PathVariable Long id) {
@@ -188,7 +189,7 @@ public class TipoSolicitudRestController {
 	}
 	
 	//FILTRA POR NOMBRE
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
+	@Secured({"ROLE_ADMIN", "ROLE_VICERRECTORIA", "ROLE_DECANO", "ROLE_DIRECTOR", "ROLE_SECRETARIA_DECANO", "ROLE_SECRETARIA_DIRECTOR", "ROLE_USUARIO"})
 	@GetMapping("/tipos-solicitud/filtrar-tipos-solicitud/{nombre}")
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<?> filtrarProductos(@PathVariable String nombre) {

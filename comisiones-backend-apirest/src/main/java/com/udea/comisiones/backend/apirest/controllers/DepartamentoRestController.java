@@ -37,21 +37,21 @@ public class DepartamentoRestController {
 	private IDepartamentoService departamentoService;
 	
 	//CONSULTA TODOS
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
+	@Secured({"ROLE_ADMIN", "ROLE_VICERRECTORIA", "ROLE_DECANO", "ROLE_SECRETARIA_DECANO"})
 	@GetMapping("/departamentos")
 	public List<Departamento> index(){
 		return departamentoService.findAll();
 	}
 	
 	//CONSULTA TODOS
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
+	@Secured({"ROLE_ADMIN", "ROLE_VICERRECTORIA", "ROLE_DECANO", "ROLE_SECRETARIA_DECANO"})
 	@GetMapping("/departamentos/page/{page}")
 	public Page<Departamento> index(@PathVariable Integer page){
 		return departamentoService.findAll(PageRequest.of(page, 10));
 	}
 	
 	//CONSULTA POR ID
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
+	@Secured({"ROLE_ADMIN", "ROLE_VICERRECTORIA", "ROLE_DECANO", "ROLE_SECRETARIA_DECANO"})
 	@GetMapping("/departamentos/{id}")
 	public ResponseEntity<?> show(@PathVariable Long id) {
 		
@@ -77,7 +77,7 @@ public class DepartamentoRestController {
 	}
 	
 	//CREA
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
+	@Secured({"ROLE_ADMIN"})
 	@PostMapping("/departamentos")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> create(@Valid @RequestBody Departamento departamento, BindingResult result) {
@@ -113,7 +113,7 @@ public class DepartamentoRestController {
 	}
 	
 	//ACTUALIZA
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
+	@Secured({"ROLE_ADMIN"})
 	@PutMapping("/departamentos/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> update(@Valid @RequestBody Departamento departamento, BindingResult result, @PathVariable Long id) {
@@ -160,7 +160,7 @@ public class DepartamentoRestController {
 	}
 	
 	//FILTRA POR NOMBRE
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA"})
+	@Secured({"ROLE_ADMIN", "ROLE_VICERRECTORIA", "ROLE_DECANO", "ROLE_SECRETARIA_DECANO"})
 	@GetMapping("/departamentos/filtrar-nombre-departamentos/{nombre}")
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<?> filtrarDepartamentos(@PathVariable String nombre) {

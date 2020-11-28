@@ -39,21 +39,24 @@ public class ComisionRestController {
 	private IComisionService comisionService;
 	
 	//CONSULTA TODOS
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
+	@Secured({"ROLE_ADMIN", "ROLE_VICERRECTORIA", "ROLE_DECANO", "ROLE_DIRECTOR", "ROLE_SECRETARIA_DECANO", "ROLE_SECRETARIA_DIRECTOR",  "ROLE_USUARIO"})
 	@GetMapping("/comisiones")
 	public List<Comision> index(){
+		
+		
+		
 		return comisionService.findAll();
 	}
 	
 	//CONSULTA TODOS
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
+	@Secured({"ROLE_ADMIN", "ROLE_VICERRECTORIA", "ROLE_DECANO", "ROLE_DIRECTOR", "ROLE_SECRETARIA_DECANO", "ROLE_SECRETARIA_DIRECTOR",  "ROLE_USUARIO"})
 	@GetMapping("/comisiones/page/{page}")
 	public Page <Comision> index(@PathVariable Integer page){
 		return comisionService.findAll(PageRequest.of(page, 10));
 	}
 	
 	//CONSULTA POR ID
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
+	@Secured({"ROLE_ADMIN", "ROLE_VICERRECTORIA", "ROLE_DECANO", "ROLE_DIRECTOR", "ROLE_SECRETARIA_DECANO", "ROLE_SECRETARIA_DIRECTOR",  "ROLE_USUARIO"})
 	@GetMapping("/comisiones/{id}")
 	public ResponseEntity<?> show(@PathVariable Long id) {
 		
@@ -79,7 +82,7 @@ public class ComisionRestController {
 	}
 	
 	//CREA
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
+	@Secured({"ROLE_ADMIN", "ROLE_USUARIO"})
 	@PostMapping("/comisiones")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?>  create(@Valid @RequestBody Comision comision, BindingResult result) {
@@ -115,7 +118,7 @@ public class ComisionRestController {
 	}
 	
 	//ACTUALIZA
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
+	@Secured({"ROLE_ADMIN", "ROLE_USUARIO"})
 	@PutMapping("/comisiones/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?>  update(@Valid @RequestBody Comision comision, BindingResult result, @PathVariable Long id) {
@@ -168,7 +171,7 @@ public class ComisionRestController {
 	}
 	
 	//ELIMINA
-	@Secured({"ROLE_ADMIN",  "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
+	@Secured({"ROLE_ADMIN", "ROLE_USUARIO"})
 	@DeleteMapping("/comisiones/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<?>  delete(@PathVariable Long id) {
@@ -194,7 +197,7 @@ public class ComisionRestController {
 	
 
 	//FILTAR POR LUGAR
-	@Secured({"ADMIN", "ROLE_COORDINADOR", "ROLE_SECRETARIA", "ROLE_PROFESOR", "ROLE_ESTUDIANTE"})
+	@Secured({"ROLE_ADMIN", "ROLE_VICERRECTORIA", "ROLE_DECANO", "ROLE_DIRECTOR", "ROLE_SECRETARIA_DECANO", "ROLE_SECRETARIA_DIRECTOR",  "ROLE_USUARIO"})
 	@GetMapping("/comisiones/filtrar-lugar-comisiones/{lugar}")
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<?> filtrarComisiones(@PathVariable String lugar) {
